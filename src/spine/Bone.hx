@@ -393,25 +393,25 @@ class Bone implements Updatable
 	
 	// getters / setters
 	
-	private function get_data(): BoneData return _data;
-	private function get_skeleton() : Skeleton return _skeleton;
-	private function get_parent(): Bone return _parent;
-	private function get_children(): Array<Bone> return _children;
-	private function get_a(): Float return _a;
-	private function get_b(): Float return _b;
-	private function get_c(): Float return _c;
-	private function get_d(): Float return _d;
-	private function get_worldX(): Float return _worldX;
-	private function get_worldY(): Float return _worldY;
-	private function get_worldRotationX(): Float return Math.atan2(_c, _a) * MathUtils.radDeg;
-	private function get_worldRotationY(): Float return Math.atan2(_d, _b) * MathUtils.radDeg;
+	private inline function get_data(): BoneData return _data;
+	private inline function get_skeleton() : Skeleton return _skeleton;
+	private inline function get_parent(): Bone return _parent;
+	private inline function get_children(): Array<Bone> return _children;
+	private inline function get_a(): Float return _a;
+	private inline function get_b(): Float return _b;
+	private inline function get_c(): Float return _c;
+	private inline function get_d(): Float return _d;
+	private inline function get_worldX(): Float return _worldX;
+	private inline function get_worldY(): Float return _worldY;
+	private inline function get_worldRotationX(): Float return Math.atan2(_c, _a) * MathUtils.radDeg;
+	private inline function get_worldRotationY(): Float return Math.atan2(_d, _b) * MathUtils.radDeg;
 	
-	private function get_worldScaleX(): Float 
+	private inline function get_worldScaleX(): Float 
 	{
 		return Math.sqrt(_a * _a + _c * _c);
 	}
 	
-	private function get_worldScaleY(): Float 
+	private inline function get_worldScaleY(): Float 
 	{
 		return Math.sqrt(_b * _b + _d * _d);
 	}

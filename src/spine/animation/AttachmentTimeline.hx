@@ -49,14 +49,14 @@ class AttachmentTimeline implements Timeline
 		attachmentNames = [];
 	}
 	
-	public function getPropertyId(): Int 
+	public inline function getPropertyId(): Int 
 	{
 		var value: Int = TimelineType.ATTACHMENT;
 		return (value << 24) + slotIndex;
 	}
 	
 	/** Sets the time and value of the specified keyframe. */
-	public function setFrame(frameIndex: Int, time: Float, attachmentName: String): Void
+	public inline function setFrame(frameIndex: Int, time: Float, attachmentName: String): Void
 	{
 		frames[frameIndex] = time;
 		attachmentNames[frameIndex] = attachmentName;

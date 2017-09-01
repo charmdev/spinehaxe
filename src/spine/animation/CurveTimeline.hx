@@ -32,7 +32,6 @@
 package spine.animation;
 
 import haxe.ds.Vector;
-import spine.ArrayUtils;
 import spine.animation.Timeline;
 
 import spine.MathUtils;
@@ -66,17 +65,17 @@ class CurveTimeline implements Timeline
 
 	}
 
-	private function get_frameCount(): Int
+	private inline function get_frameCount(): Int
 	{
 		return Math.floor(curves.length / BEZIER_SIZE + 1);
 	}
 
-	public function setLinear(frameIndex: Int): Void
+	public inline function setLinear(frameIndex: Int): Void
 	{
 		curves[frameIndex * BEZIER_SIZE] = LINEAR;
 	}
 
-	public function setStepped(frameIndex: Int): Void
+	public inline function setStepped(frameIndex: Int): Void
 	{
 		curves[frameIndex * BEZIER_SIZE] = STEPPED;
 	}

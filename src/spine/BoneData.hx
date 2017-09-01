@@ -55,23 +55,23 @@ class BoneData
 
 		if (name == null)
 			throw "name cannot be null.";
-		
+
 		_index = index;
 		_name = name;
 		_parent = parent;
 	}
 
-	public function toString(): String
+	public inline function toString(): String
 	{
 		return _name;
 	}
 	
 	// getters / setters
-	private function get_index(): Int return _index;
-	private function get_name(): String return _name;
+	private inline function get_index(): Int return _index;
+	private inline function get_name(): String return _name;
 	
 	/** @return May be null. */
-	private function get_parent(): BoneData return _parent;
+	private inline function get_parent(): BoneData return _parent;
 	
 	@:allow(spine) private var _index: Int;
 	@:allow(spine) private var _name: String;

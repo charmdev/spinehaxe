@@ -48,7 +48,7 @@ class AnimationStateData
 		animationToMixTime = new Map<String, Maybe<Float>>();
 	}
 
-	private function get_skeletonData(): SkeletonData
+	private inline function get_skeletonData(): SkeletonData
 	{
 		return _skeletonData;
 	}
@@ -77,7 +77,7 @@ class AnimationStateData
 		animationToMixTime[from.name + ":" + to.name] = duration;
 	}
 
-	public function getMix(from: Animation, to: Animation): Float
+	public inline function getMix(from: Animation, to: Animation): Float
 	{
 		return animationToMixTime[from.name + ":" + to.name].or( defaultMix );
 	}

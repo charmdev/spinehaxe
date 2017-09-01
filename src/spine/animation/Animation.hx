@@ -74,7 +74,7 @@ class Animation
 			timelines[i].apply(skeleton, lastTime, time, events, alpha, setupPose, mixingOut);
 	}
 
-	public function toString(): String
+	public inline function toString(): String
 	{
 		return name;
 	}
@@ -145,7 +145,7 @@ class Animation
 	}
 	
 	// getters / setters
-	private function get_timelines(): Array<Timeline> return _timelines;
+	private inline function get_timelines(): Array<Timeline> return _timelines;
 	
 	private var _timelines: Array<Timeline>;
 }

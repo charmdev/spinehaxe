@@ -58,7 +58,7 @@ class Event
 	}
 	
 	// getters / setters
-	private function get_data(): EventData return _data;
+	private inline function get_data(): EventData return _data;
 	
 	@:allow(spine) private var _data: EventData;
 }

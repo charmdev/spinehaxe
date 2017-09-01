@@ -80,26 +80,26 @@ class Slot
 		}
 	}
 	
-	public function toString(): String
+	public inline function toString(): String
 	{
 		return _data.name;
 	}
 	
 	// getters / setters
-	private function get_data(): SlotData return _data;
-	private function get_bone(): Bone return _bone;
+	private inline function get_data(): SlotData return _data;
+	private inline function get_bone(): Bone return _bone;
 	
 	/** @return May be null. */
-	private function get_attachment(): Attachment return _attachment;
+	private inline function get_attachment(): Attachment return _attachment;
 
 	/** Returns the time since the attachment was set. */
-	private function get_attachmentTime(): Float return (_bone._skeleton.time - _attachmentTime);
+	private inline function get_attachmentTime(): Float return (_bone._skeleton.time - _attachmentTime);
 	
-	private function get_skeleton(): Skeleton return _bone._skeleton;
+	private inline function get_skeleton(): Skeleton return _bone._skeleton;
 	
 	/** Sets the attachment and resets {@link #getAttachmentTime()}.
 	* @param attachment May be null. */
-	private function set_attachment(attachment: Attachment): Attachment
+	private inline function set_attachment(attachment: Attachment): Attachment
 	{
 		if (_attachment != attachment)
 		{
@@ -111,7 +111,7 @@ class Slot
 		return attachment;
 	}
 
-	private function set_attachmentTime(time: Float): Float
+	private inline function set_attachmentTime(time: Float): Float
 	{
 		_attachmentTime = _bone._skeleton.time - time;
 		return time;

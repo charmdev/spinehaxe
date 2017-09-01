@@ -99,10 +99,8 @@ class SkeletonJson
 	public function readSkeletonData(object: String, name: String = null): SkeletonData
 	{
 		if (object == null)
-		{
 			throw "object cannot be null.";
-		}
-
+		
 		var root: TSpineData = Json.parse( Std.string(object) );
 		
 		var skeletonData: SkeletonData = new SkeletonData();
@@ -425,6 +423,9 @@ class SkeletonJson
 
 				path.lengths = getFloatArray(map.lengths, scale);
 				return path;
+				
+			default:
+				return null;
 		}
 
 		return null;

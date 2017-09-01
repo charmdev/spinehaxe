@@ -58,14 +58,14 @@ class TransformConstraintData
 		_name = name;
 	}
 
-	public function toString(): String
+	public inline function toString(): String
 	{
 		return _name;
 	}
 	
 	// getters // setters
-	private function get_name(): String return _name;
-	private function get_bones(): Array<BoneData> return _bones;
+	private inline function get_name(): String return _name;
+	private inline function get_bones(): Array<BoneData> return _bones;
 	
 	@:allow(spine) private var _name: String;
 	@:allow(spine) private var _bones: Array<BoneData> = [];

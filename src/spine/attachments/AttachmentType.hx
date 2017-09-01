@@ -40,4 +40,5 @@ abstract AttachmentType(String) from String
 	var MESH = "mesh";
 	var LINKEDMESH = "linkedmesh";
 	var PATH = "path";
+	var VERTEX = "vertex";
 }

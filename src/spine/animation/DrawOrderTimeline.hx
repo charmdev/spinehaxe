@@ -50,14 +50,14 @@ class DrawOrderTimeline implements Timeline
 		drawOrders = new Vector<Array<Int>>( frameCount );
 	}
 	
-	public function getPropertyId(): Int 
+	public inline function getPropertyId(): Int 
 	{
 		var value: Int = TimelineType.DRAW_ORDER;
 		return (value << 24);
 	}
 	
 	/** Sets the time and value of the specified keyframe. */
-	public function setFrame(frameIndex: Int, time: Float, drawOrder: Array<Int>): Void
+	public inline function setFrame(frameIndex: Int, time: Float, drawOrder: Array<Int>): Void
 	{
 		frames[frameIndex] = time;
 		drawOrders[frameIndex] = drawOrder;
@@ -109,5 +109,5 @@ class DrawOrderTimeline implements Timeline
 	}
 	
 	// getters / setters
-	private function get_frameCount(): Int return frames.length;
+	private inline function get_frameCount(): Int return frames.length;
 }

@@ -35,6 +35,8 @@ package spine.attachments;
 class Attachment
 {
 	public var name(get, never): String;
+	
+	public var type(default, null):AttachmentType;
 
 	public function new(name : String)
 	{
@@ -50,7 +52,7 @@ class Attachment
 	}
 	
 	// getters / setters
-	private function get_name(): String return _name;
+	private inline function get_name(): String return _name;
 	
 	@:allow(spine.attachments) private var _name: String;
 }

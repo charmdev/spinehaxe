@@ -39,7 +39,7 @@ class MeshAttachment extends VertexAttachment
 	public var parentMesh(get, set): MeshAttachment;
 
 	public var worldVertices: Array<Float>;
-	public var uvs: Vector<Float>;
+	public var uvs:Vector<Float>;
 	public var regionUVs: Vector<Float>;
 	public var triangles: Array<Int>;
 	public var r: Float = 1;
@@ -71,6 +71,8 @@ class MeshAttachment extends VertexAttachment
 	public function new(name: String)
 	{
 		super(name);
+		
+		type = AttachmentType.MESH;
 	}
 
 	public function updateUVs(): Void
@@ -105,7 +107,7 @@ class MeshAttachment extends VertexAttachment
 		}
 	}
 
-	public function applyFFD(sourceAttachment: Attachment): Bool
+	public inline function applyFFD(sourceAttachment: Attachment): Bool
 	{
 		return (this == sourceAttachment) || (inheritDeform && (_parentMesh == sourceAttachment));
 	}

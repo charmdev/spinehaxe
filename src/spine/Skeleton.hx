@@ -60,10 +60,10 @@ class Skeleton
 	public var y: Float = 0;
 	
 	public function new(data : SkeletonData)
-	{
+	{		
 		if (data == null) 
 			throw 'data cannot be null.';
-
+		
 		_data = data;
 
 		bones = [];
@@ -380,7 +380,7 @@ class Skeleton
 	{
 		if (boneName == null) 
 			throw 'boneName cannot be null.';
-		
+
 		for (bone in bones)
 			if (bone._data._name == boneName)
 				return bone;
@@ -390,7 +390,7 @@ class Skeleton
 
 	/** @return -1 if the bone was not found. */
 	public function findBoneIndex(boneName: String): Int
-	{
+	{	
 		if (boneName == null) 
 			throw 'boneName cannot be null.';
 		
@@ -443,7 +443,7 @@ class Skeleton
 
 	/** @return May be null. */
 	public function getAttachmentForSlotIndex(slotIndex : Int, attachmentName : String): Attachment
-	{
+	{		
 		if (attachmentName == null)
 			throw 'attachmentName cannot be null.';
 		
@@ -462,7 +462,7 @@ class Skeleton
 
 	/** @param attachmentName May be null. */
 	public function setAttachment(slotName: String, attachmentName: String): Void
-	{
+	{		
 		if (slotName == null)
 			throw 'slotName cannot be null.';
 		
@@ -488,7 +488,7 @@ class Skeleton
 
 	/** @return May be null. */
 	public function findIkConstraint(constraintName: String): IkConstraint
-	{
+	{		
 		if (constraintName == null)
 			throw 'constraintName cannot be null.';
 		
@@ -501,10 +501,10 @@ class Skeleton
 
 	/** @return May be null. */
 	public function findTransformConstraint(constraintName: String): TransformConstraint
-	{
+	{		
 		if (constraintName == null)
 			throw 'constraintName cannot be null.';
-			
+		
 		for (transformConstraint in transformConstraints)
 			if (transformConstraint._data._name == constraintName)
 				return transformConstraint;
@@ -517,7 +517,7 @@ class Skeleton
 	{
 		if (constraintName == null)
 			throw 'constraintName cannot be null.';
-			
+		
 		for (pathConstraint in pathConstraints)
 			if (pathConstraint._data._name == constraintName)
 				return pathConstraint;
@@ -525,30 +525,30 @@ class Skeleton
 		return null;
 	}
 
-	public function update(delta: Float) : Void
+	public inline function update(delta: Float) : Void
 	{
 		time += delta;
 	}
 
-	public function toString() : String
+	public inline function toString() : String
 	{
 		return _data.name;
 	}
 	
 	// getters / setters
-	private function get_data(): SkeletonData return _data;
-	private function get_getUpdateCache(): Array<Updatable> return _updateCache;
-	private function get_rootBone() : Bone
+	private inline function get_data(): SkeletonData return _data;
+	private inline function get_getUpdateCache(): Array<Updatable> return _updateCache;
+	private inline function get_rootBone() : Bone
 	{
 		if (bones.length == 0)
 			return null;
 		
 		return bones[0];
 	}
-	private function get_skin(): Skin return _skin;
+	private inline function get_skin(): Skin return _skin;
 
 	/** @return May be null. */
-	private function get_skinName(): String return _skin == null ? null : _skin._name;
+	private inline function get_skinName(): String return _skin == null ? null : _skin._name;
 	
 	/** Sets the skin used to look up attachments before looking in the {@link SkeletonData#getDefaultSkin() default skin}. 
 	* Attachments from the new skin are attached if the corresponding attachment from the old skin was attached. If there was 
@@ -580,7 +580,7 @@ class Skeleton
 		return newSkin;
 	}
 	
-	private function set_skinName(skinName: String): String
+	private inline function set_skinName(skinName: String): String
 	{
 		var skin: Skin = data.findSkin(skinName);
 		if (skin == null)

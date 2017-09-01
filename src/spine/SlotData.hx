@@ -56,15 +56,15 @@ class SlotData
 		_boneData = boneData;
 	}
 
-	public function toString(): String
+	public inline function toString(): String
 	{
 		return _name;
 	}
 	
 	// getters / setters
-	private function get_index(): Int return _index;
-	private function get_name(): String return _name;
-	private function get_boneData(): BoneData return _boneData;
+	private inline function get_index(): Int return _index;
+	private inline function get_name(): String return _name;
+	private inline function get_boneData(): BoneData return _boneData;
 	
 	@:allow(spine) private var _index: Int;
 	@:allow(spine) private var _name: String;

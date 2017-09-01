@@ -59,12 +59,12 @@ class IkConstraint implements Constraint
 		target = skeleton.findBone(data.target._name);
 	}
 
-	public function apply(): Void
+	public inline function apply(): Void
 	{
 		update();
 	}
 
-	public function update(): Void
+	public inline function update(): Void
 	{
 		switch ( bones.length )
 		{
@@ -331,7 +331,7 @@ class IkConstraint implements Constraint
 	}
 	
 	// getters / setters
-	private function get_data(): IkConstraintData return _data;
+	private inline function get_data(): IkConstraintData return _data;
 	
 	@:allow(spine) private var _data: IkConstraintData;
 }

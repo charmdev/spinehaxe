@@ -43,5 +43,7 @@ class PathAttachment extends VertexAttachment
 	public function new(name: String)
 	{
 		super(name);
+		
+		type = AttachmentType.PATH;
 	}
 }

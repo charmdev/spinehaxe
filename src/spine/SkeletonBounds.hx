@@ -40,11 +40,14 @@ class SkeletonBounds
     public var width(get, never) : Float;
     public var height(get, never) : Float;
 
-    private var polygonPool : Array<Polygon> = new Array<Polygon>();
+    private var polygonPool:Array<Polygon> = new Array<Polygon>();
     
-    public var boundingBoxes : Array<BoundingBoxAttachment> = new Array<BoundingBoxAttachment>();
-    public var polygons : Array<Polygon> = new Array<Polygon>();
-    public var minX : Float;public var minY : Float;public var maxX : Float;public var maxY : Float;
+    public var boundingBoxes:Array<BoundingBoxAttachment> = new Array<BoundingBoxAttachment>();
+    public var polygons:Array<Polygon> = new Array<Polygon>();
+    public var minX:Float;
+	public var minY:Float;
+	public var maxX:Float;
+	public var maxY:Float;
     
     public function new()
     {
@@ -121,7 +124,8 @@ class SkeletonBounds
     
     
     /** Returns true if the axis aligned bounding box contains the point. */
-    public function aabbContainsPoint(x : Float, y : Float) : Bool{
+    public function aabbContainsPoint(x:Float, y:Float):Bool
+	{
         return x >= minX && x <= maxX && y >= minY && y <= maxY;
     }
     
@@ -167,11 +171,11 @@ class SkeletonBounds
         return index == -(1) ? null : polygons[index];
     }
     
-    private function get_Width() : Float{
+    private inline function get_Width() : Float{
         return maxX - minX;
     }
     
-    private function get_Height() : Float{
+    private inline function get_Height() : Float{
         return maxY - minY;
     }
 }

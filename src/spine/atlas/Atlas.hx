@@ -43,7 +43,7 @@ class Atlas
 	private var textureLoader: TextureLoader;
 
 	/** @param object A String or ByteArray. */
-	public function new(object: Dynamic, textureLoader: TextureLoader)
+	public function new(object:Dynamic, textureLoader:TextureLoader)
 	{
 		if (object == null) 
 			return;
@@ -52,33 +52,32 @@ class Atlas
 		{
 			load(Std.string(object), textureLoader);
 		}
-#if !js
+		#if !js
 		else if (Std.is(object, ByteArray)) 
 		{
 			load(cast(object, ByteArray).readUTFBytes(cast(object, ByteArray).length), textureLoader);
 		}
-#end
+		#end
 		else 
 		{
 			throw 'object must be a TextureAtlas or AttachmentLoader.';
 		}
 	}
 
-	private function load(atlasText: String, textureLoader: TextureLoader): Void
+	private function load(atlasText:String, textureLoader:TextureLoader):Void
 	{
 		if (textureLoader == null) 
 			throw "textureLoader cannot be null.";
 		
 		this.textureLoader = textureLoader;
 
-		var reader: Reader = new Reader(atlasText);
-		var tuple: Array<String> = new Array<String>();
+		var reader:Reader = new Reader(atlasText);
+		var tuple:Array<String> = new Array<String>();
 		//tuple.length = 4;
-		var page: AtlasPage = null;
+		var page:AtlasPage = null;
 		while (true)
 		{
-			var line: String = reader.readLine();
-			
+			var line:String = reader.readLine();
 			if (line == null) 
 				break;
 			
@@ -209,11 +208,7 @@ class Reader
 
 	public function trim(value: String): String
 	{
-#if !js
-		var regex = new EReg("^\\s+|\\s+$", "gs");
-#else
 		var regex = new EReg("^\\s+|\\s+$", "g");
-#end
 		return regex.replace(value, "");
 	}
 

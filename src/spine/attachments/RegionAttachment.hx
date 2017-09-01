@@ -73,6 +73,8 @@ class RegionAttachment extends Attachment
 		super(name);
 		//offset.length = 8;
 		//uvs.length = 8;
+		
+		type = AttachmentType.REGION;
 	}
     
 	public function setUVs(u: Float, v: Float, u2: Float, v2: Float, rotate: Bool): Void

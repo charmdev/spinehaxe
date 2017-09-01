@@ -78,7 +78,7 @@ class PathConstraint implements Constraint
 		_segments = ArrayUtils.allocFloat(10);
 	}
 
-	public function apply(): Void
+	public inline function apply(): Void
 	{
 		update();
 	}
@@ -642,14 +642,14 @@ class PathConstraint implements Constraint
 		return _data.order;
 	}
 	
-	public function toString(): String
+	public inline function toString(): String
 	{
 		return _data.name;
 	}
 	
 	// getters / setters
-	private function get_bones(): Array<Bone> return _bones;
-	private function get_data(): PathConstraintData return _data;
+	private inline function get_bones(): Array<Bone> return _bones;
+	private inline function get_data(): PathConstraintData return _data;
 	
 	@:allow(spine) private var _data: PathConstraintData;
 	@:allow(spine) private var _bones: Array<Bone>;

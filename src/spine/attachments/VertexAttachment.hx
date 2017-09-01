@@ -45,6 +45,8 @@ class VertexAttachment extends Attachment
 	public function new(name : String)
 	{
 		super(name);
+		
+		type = AttachmentType.VERTEX;
 	}
 
 	public function computeWorldVertices(slot: Slot, worldVertices: Vector<Float>): Void

@@ -49,14 +49,14 @@ class EventTimeline implements Timeline
 		events = new Vector<Event>( frameCount );
 	}
 
-	public function getPropertyId(): Int 
+	public inline function getPropertyId(): Int 
 	{
 		var value: Int = TimelineType.EVENT;
 		return (value << 24);
 	}
 	
 	/** Sets the time and value of the specified keyframe. */
-	public function setFrame(frameIndex: Int, event: Event): Void
+	public inline function setFrame(frameIndex: Int, event: Event): Void
 	{
 		frames[frameIndex] = event.time;
 		events[frameIndex] = event;
@@ -103,5 +103,5 @@ class EventTimeline implements Timeline
 	}
 	
 	// getters / setters
-	private function get_frameCount(): Int return frames.length;
+	private inline function get_frameCount(): Int return frames.length;
 }

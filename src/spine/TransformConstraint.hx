@@ -185,8 +185,8 @@ class TransformConstraint implements Constraint
 	
 	// getters / setters
 	
-	private function get_data(): TransformConstraintData return _data;
-	private function get_bones(): Array<Bone> return _bones;
+	private inline function get_data(): TransformConstraintData return _data;
+	private inline function get_bones(): Array<Bone> return _bones;
 	
 	@:allow(spine) private var _data: TransformConstraintData;
 	@:allow(spine) private var _bones: Array<Bone>;

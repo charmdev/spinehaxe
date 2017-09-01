@@ -38,5 +38,7 @@ class BoundingBoxAttachment extends VertexAttachment
 	public function new(name: String)
 	{
 		super(name);
+		
+		type = AttachmentType.BOUNDINGBOX;
 	}
 }

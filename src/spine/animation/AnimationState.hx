@@ -49,7 +49,7 @@ class AnimationState
 	public var onComplete: Array<TrackEntry->Void>;
 	public var onEvent: Array<TrackEntry->Event->Void>;
 	private var queue: EventQueue;
-	private var propertyIDs: Map<String, String>;
+	private var propertyIDs: Map<Int, Int>;
 	@:allow(spine) private var animationsChanged: Bool;
 	public var timeScale: Float = 1;
 	@:allow(spine) private var trackEntryPool: Pool<TrackEntry>;
@@ -73,7 +73,7 @@ class AnimationState
 		
 		this.data = data;
 		this.queue = new EventQueue(this);
-		this.propertyIDs = new Map<String, String>();
+		this.propertyIDs = new Map<Int, Int>();
 		this.trackEntryPool = new Pool<TrackEntry>(
 			function(): TrackEntry 
 			{
@@ -666,7 +666,7 @@ class AnimationState
 	private function _animationsChanged(): Void 
 	{
 		animationsChanged = false;
-		propertyIDs = new Map<String, String>();
+		propertyIDs = new Map<Int, Int>();
 
 		// Compute timelinesFirst from lowest to highest track entries.
 		
@@ -714,7 +714,7 @@ class AnimationState
 		
 		for (i in 0...n) 
 		{
-			var id: String = Std.string(timelines[i].getPropertyId());
+			var id:Int = timelines[i].getPropertyId();
 			propertyIDs.set(id, id);
 			usage[i] = true;
 		}
@@ -737,7 +737,7 @@ class AnimationState
 		
 		for (i in 0...n) 
 		{
-			var id: String = Std.string(timelines[i].getPropertyId());
+			var id:Int = timelines[i].getPropertyId();
 			usage[i] = !propertyIDs.exists(id);			
 			propertyIDs.set(id, id);
 		}

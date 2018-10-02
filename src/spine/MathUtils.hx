@@ -38,29 +38,27 @@ class MathUtils
 	public static var radDeg: Float = 180 / Math.PI;
 	public static var degRad: Float = Math.PI / 180;
 
-	public static function cosDeg(degrees: Float): Float
+	public static inline function cosDeg(degrees: Float): Float
 	{
 		return Math.cos(degrees * degRad);
 	}
 
-	public static function sinDeg(degrees: Float): Float
+	public static inline function sinDeg(degrees: Float): Float
 	{
 		return Math.sin(degrees * degRad);
 	}
 
-	public static function clamp(value: Float, min: Float, max: Float): Float
+	public static inline function clamp(value: Float, min: Float, max: Float): Float
 	{
-		if (value < min) return min;
-		if (value > max) return max;
-		return value;
+		return (value < min) ? min : ((value > max) ? max : value); 
 	}
 	
-	public static function maxInt(): Int
+	public static inline function maxInt(): Int
 	{
 		return Math.floor(cast( -1, UInt) / 2);
 	}
 	
-	static public function signum (value: Float): Float 
+	static public inline function signum (value: Float): Float 
 	{
 		return value > 0 ? 1 : value < 0 ? -1 : 0;
 	}

@@ -43,10 +43,14 @@ class AttachmentTimeline implements Timeline
 	public var frames: Array<Float>;  // time, ...  
 	public var attachmentNames: Array<String>;
 
+	public var type:TimelineType;
+	
 	public function new(frameCount: Int)
 	{
 		frames = [];
 		attachmentNames = [];
+		
+		type = TimelineType.ATTACHMENT;
 	}
 	
 	public inline function getPropertyId(): Int 

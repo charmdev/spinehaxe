@@ -40,3 +40,13 @@ abstract TransformMode(String) from String
 	var NO_SCALE = "noScale";
 	var NO_SCALE_OR_REFLECTION = "noScaleOrReflection";
 }
+
+@:enum
+abstract TransformIntMode(Int) from Int
+{
+	var NORMAL = 0;
+	var ONLY_TRANSLATION = 1;
+	var NO_ROTATION_OR_REFLECTION = 2;
+	var NO_SCALE = 3;
+	var NO_SCALE_OR_REFLECTION = 4;
+}

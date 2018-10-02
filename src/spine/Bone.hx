@@ -33,6 +33,7 @@ package spine;
 
 import spine.BoneData;
 import spine.Skeleton;
+import spine.TransformMode.TransformIntMode;
 import spine.Updatable;
 
 class Bone implements Updatable
@@ -163,7 +164,7 @@ class Bone implements Updatable
 
 		switch (_data.transformMode) 
 		{
-			case TransformMode.NORMAL:
+			case TransformIntMode.NORMAL:
 				rotationY = rotation + 90 + shearY;
 				la = MathUtils.cosDeg(rotation + shearX) * scaleX;
 				lb = MathUtils.cosDeg(rotationY) * scaleY;
@@ -175,14 +176,14 @@ class Bone implements Updatable
 				_d = pc * lb + pd * ld;
 				return;
 				
-			case TransformMode.ONLY_TRANSLATION:
+			case TransformIntMode.ONLY_TRANSLATION:
 				rotationY = rotation + 90 + shearY;
 				_a = MathUtils.cosDeg(rotation + shearX) * scaleX;
 				_b = MathUtils.cosDeg(rotationY) * scaleY;
 				_c = MathUtils.sinDeg(rotation + shearX) * scaleX;
 				_d = MathUtils.sinDeg(rotationY) * scaleY;
 				
-			case TransformMode.NO_ROTATION_OR_REFLECTION:
+			case TransformIntMode.NO_ROTATION_OR_REFLECTION:
 				s = pa * pa + pc * pc;
 				var prx: Float = 0;
 				if (s > 0.0001) 
@@ -209,7 +210,7 @@ class Bone implements Updatable
 				_c = pc * la + pd * lc;
 				_d = pc * lb + pd * ld;
 
-			case TransformMode.NO_SCALE, TransformMode.NO_SCALE_OR_REFLECTION:
+			case TransformIntMode.NO_SCALE, TransformIntMode.NO_SCALE_OR_REFLECTION:
 				cos = MathUtils.cosDeg(rotation);
 				sin = MathUtils.sinDeg(rotation);
 				var za: Float = pa * cos + pb * sin;
@@ -233,7 +234,7 @@ class Bone implements Updatable
 				_b = za * lb + zb * ld;
 				_c = zc * la + zd * lc;
 				_d = zc * lb + zd * ld;
-				if (_data.transformMode != TransformMode.NO_SCALE_OR_REFLECTION ? pa * pd - pb * pc < 0 : skeleton.flipX != skeleton.flipY) 
+				if (_data.transformMode != TransformIntMode.NO_SCALE_OR_REFLECTION ? pa * pd - pb * pc < 0 : skeleton.flipX != skeleton.flipY) 
 				{
 					_b = -_b;
 					_d = -_d;

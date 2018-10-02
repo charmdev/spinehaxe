@@ -42,11 +42,15 @@ class EventTimeline implements Timeline
 
 	public var frames: Vector<Float>;  // time, ...  
 	public var events: Vector<Event>;
+	
+	public var type:TimelineType;
 
 	public function new(frameCount: Int)
 	{
 		frames = ArrayUtils.allocFloat( frameCount );
 		events = new Vector<Event>( frameCount );
+		
+		type = TimelineType.EVENT;
 	}
 
 	public inline function getPropertyId(): Int 

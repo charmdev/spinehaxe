@@ -60,6 +60,11 @@ class AtlasAttachmentLoader implements AttachmentLoader
 		
 		if (region == null) 
 		{
+		//	trace(atlas.pages[0].name);
+			trace("path: " + path);
+			trace("name: " + name);
+		//	region = atlas.regions[0];
+			
 			throw "Region not found in atlas: " + path + " (region attachment: " + name + ")";
 		}
 		
@@ -81,9 +86,12 @@ class AtlasAttachmentLoader implements AttachmentLoader
 	{
 		var region : AtlasRegion = atlas.findRegion(path);
 		if (region == null)
-			region = atlas.findRegion(name);
+            region = atlas.findRegion(name);
+		
 		if (region == null) 
 		{
+			trace("path: " + path);
+			trace("name: " + name);
 			throw "Region not found in atlas: " + path + " (mesh attachment: " + name + ")";
 		}
 		

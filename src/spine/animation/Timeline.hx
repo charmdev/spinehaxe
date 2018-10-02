@@ -36,6 +36,7 @@ import spine.Skeleton;
 
 interface Timeline
 {
+	var type:TimelineType;
 	/** Sets the value(s) for the specified time. */
 	function apply(skeleton: Skeleton, lastTime: Float, time: Float, firedEvents: Array<Event>, alpha: Float, setupPose: Bool, mixingOut: Bool): Void;
 	function getPropertyId(): Int;

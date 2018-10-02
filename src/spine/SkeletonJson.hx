@@ -36,6 +36,7 @@ import haxe.ds.Vector;
 import spine.Skin;
 import spine.SlotData;
 import spine.TransformConstraintData;
+import spine.TransformMode.TransformIntMode;
 import spine.animation.Animation;
 import spine.animation.AttachmentTimeline;
 import spine.animation.ColorTimeline;
@@ -99,8 +100,10 @@ class SkeletonJson
 	public function readSkeletonData(object: String, name: String = null): SkeletonData
 	{
 		if (object == null)
+		{
 			throw "object cannot be null.";
-		
+		}
+
 		var root: TSpineData = Json.parse( Std.string(object) );
 		
 		var skeletonData: SkeletonData = new SkeletonData();
@@ -140,7 +143,21 @@ class SkeletonJson
 			boneData.scaleY = boneMap.scaleY.or( 1.0 );
 			boneData.shearX = boneMap.shearX.or( 0.0 );
 			boneData.shearY = boneMap.shearY.or( 0.0 );
-			boneData.transformMode = boneMap.transform.or( "normal" );
+			
+			var transformMode = boneMap.transform.or("normal");
+			boneData.transformMode = switch (transformMode)
+			{
+				case TransformMode.ONLY_TRANSLATION:
+					TransformIntMode.ONLY_TRANSLATION;
+				case TransformMode.NO_ROTATION_OR_REFLECTION:
+					TransformIntMode.NO_ROTATION_OR_REFLECTION; 
+				case TransformMode.NO_SCALE:
+					TransformIntMode.NO_SCALE; 
+				case TransformMode.NO_SCALE_OR_REFLECTION:
+					TransformIntMode.NO_SCALE_OR_REFLECTION; 
+				default:
+					TransformIntMode.NORMAL;
+			}
 			
 			skeletonData.bones.push(boneData);
 		}  
@@ -879,7 +896,7 @@ class SkeletonJson
 		if (hexString.length != 8)
 			throw 'Color hexidecimal length must be 8, recieved: ${hexString}';
 		
-		return Std.parseInt( "0x" + hexString.substring(colorIndex * 2, colorIndex * 2 + 2) ) / 255;
+		return Std.parseInt("0x" + hexString.substring(colorIndex * 2, colorIndex * 2 + 2)) / 255;
 	}
 
 	private static function getFloatArray(raw: Array<Float>, scale: Float): Vector<Float>

@@ -31,6 +31,8 @@
 
 package spine;
 
+import spine.TransformMode.TransformIntMode;
+
 class BoneData
 {
 	public var index(get, never): Int;
@@ -45,7 +47,7 @@ class BoneData
 	public var scaleY: Float = 1.0;
 	public var shearX: Float;
 	public var shearY: Float;
-	public var transformMode: TransformMode = TransformMode.NORMAL;
+	public var transformMode: TransformIntMode = TransformIntMode.NORMAL;
 
 	/** @param parent May be null. */
 	public function new(index: Int, name: String, parent: BoneData)

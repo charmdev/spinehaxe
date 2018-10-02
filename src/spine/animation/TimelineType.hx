@@ -47,4 +47,6 @@ abstract TimelineType(Int) to Int
 	var PATH_CONSTRAINT_POSITION = 11;
 	var PATH_CONSTRAINT_SPACING = 12;
 	var PATH_CONSTRAINT_MIX = 13;
+	
+	var CURVE = 14;
 }

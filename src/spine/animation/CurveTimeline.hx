@@ -32,6 +32,7 @@
 package spine.animation;
 
 import haxe.ds.Vector;
+import spine.ArrayUtils;
 import spine.animation.Timeline;
 
 import spine.MathUtils;
@@ -42,6 +43,8 @@ import spine.Skeleton;
 class CurveTimeline implements Timeline
 {
 	public var frameCount(get, never): Int;
+	
+	public var type:TimelineType;
 
 	private static inline var LINEAR: Float = 0;
 	private static inline var STEPPED: Float = 1;
@@ -53,6 +56,7 @@ class CurveTimeline implements Timeline
 	public function new(frameCount: Int)
 	{
 		curves = ArrayUtils.allocFloat((frameCount - 1) * BEZIER_SIZE);
+		type = TimelineType.CURVE;
 	}
 	
 	public function getPropertyId (): Int 
@@ -67,7 +71,7 @@ class CurveTimeline implements Timeline
 
 	private inline function get_frameCount(): Int
 	{
-		return Math.floor(curves.length / BEZIER_SIZE + 1);
+		return Std.int(curves.length / BEZIER_SIZE + 1);
 	}
 
 	public inline function setLinear(frameIndex: Int): Void
@@ -123,8 +127,7 @@ class CurveTimeline implements Timeline
 		var type: Float = curves[i];
 		if (type == LINEAR)
 			return percent;
-
-		if (type == STEPPED)
+		else if (type == STEPPED)
 			return 0;
 		
 		i++;

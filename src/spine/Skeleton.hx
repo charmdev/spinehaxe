@@ -32,6 +32,7 @@
 package spine;
 
 import spine.attachments.Attachment;
+import spine.attachments.AttachmentType;
 import spine.attachments.PathAttachment;
 
 class Skeleton
@@ -215,7 +216,7 @@ class Skeleton
 			sortPathConstraintAttachment(data.skins[ii], slotIndex, slotBone);
 
 		var attachment: Attachment = slot.attachment;
-		if (Std.is(attachment,PathAttachment)) 
+		if (attachment.type == AttachmentType.PATH) 
 			sortPathConstraintAttachment2(attachment, slotBone);
 
 		var constrained: Array<Bone> = constraint.bones;
@@ -261,7 +262,7 @@ class Skeleton
 
 	private function sortPathConstraintAttachment2(attachment: Attachment, slotBone: Bone): Void
 	{
-		var pathAttachment: PathAttachment = Std.is(attachment, PathAttachment) ? cast attachment : null;
+		var pathAttachment: PathAttachment = attachment.type == AttachmentType.PATH ? cast attachment : null;
 		if (pathAttachment == null)
 			return;
 		

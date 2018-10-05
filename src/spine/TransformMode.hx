@@ -45,8 +45,8 @@ abstract TransformMode(String) from String
 abstract TransformIntMode(Int) from Int
 {
 	var NORMAL = 0;
-	var ONLY_TRANSLATION = 1;
-	var NO_ROTATION_OR_REFLECTION = 2;
-	var NO_SCALE = 3;
-	var NO_SCALE_OR_REFLECTION = 4;
+	var ONLY_TRANSLATION = 7;
+	var NO_ROTATION_OR_REFLECTION = 1;
+	var NO_SCALE = 2;
+	var NO_SCALE_OR_REFLECTION = 6;
 }

@@ -349,7 +349,7 @@ class SkeletonJson
 	{
 		name = map.name.or( name );
 
-		var type: AttachmentType = map.type.or( "region" );
+		var type: AttachmentStringType = map.type.or( "region" );
 
 		var scale: Float = this.scale;
 		var color: String;

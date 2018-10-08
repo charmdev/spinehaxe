@@ -31,13 +31,13 @@
 
 package spine.attachments;
 
-import spine.attachments.AttachmentType.AttachmentIntType;
+import spine.attachments.AttachmentType;
 
 class Attachment
 {
 	public var name(get, never): String;
 	
-	public var type(default, null):AttachmentIntType;
+	public var type(default, null):AttachmentType;
 
 	public function new(name : String)
 	{

@@ -35,14 +35,13 @@ import haxe.ds.Vector;
 import spine.Bone;
 import spine.Skeleton;
 import spine.Slot;
-import spine.attachments.AttachmentType.AttachmentIntType;
 
 class VertexAttachment extends Attachment
 {
 	public static inline function isVertexAttachment(attachment:Attachment):Bool
 	{
 		var type = attachment.type;
-		return (type == AttachmentIntType.MESH || type == AttachmentIntType.BOUNDINGBOX || type == AttachmentIntType.PATH);
+		return (type == AttachmentType.MESH || type == AttachmentType.BOUNDINGBOX || type == AttachmentType.PATH);
 	}
 	
 	public var bones: Array<Int>;

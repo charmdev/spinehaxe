@@ -32,7 +32,6 @@
 package spine.attachments;
 
 import haxe.ds.Vector;
-import spine.attachments.AttachmentType.AttachmentIntType;
 import spine.attachments.VertexAttachment;
 
 class PathAttachment extends VertexAttachment
@@ -45,6 +44,6 @@ class PathAttachment extends VertexAttachment
 	{
 		super(name);
 		
-		type = AttachmentIntType.PATH;
+		type = AttachmentType.PATH;
 	}
 }

@@ -32,7 +32,6 @@
 package spine.attachments;
 
 import haxe.ds.Vector;
-import spine.attachments.AttachmentType.AttachmentIntType;
 import spine.attachments.VertexAttachment;
 
 class MeshAttachment extends VertexAttachment
@@ -73,7 +72,7 @@ class MeshAttachment extends VertexAttachment
 	{
 		super(name);
 		
-		type = AttachmentIntType.MESH;
+		type = AttachmentType.MESH;
 	}
 
 	public function updateUVs(): Void

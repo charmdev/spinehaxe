@@ -32,7 +32,7 @@
 package spine.attachments;
 
 @:enum
-abstract AttachmentType(String) from String
+abstract AttachmentStringType(String) from String
 {
 	var REGION = "region";
 	//var REGIONSEQUENCE = "regionsequence";
@@ -44,10 +44,9 @@ abstract AttachmentType(String) from String
 }
 
 @:enum
-abstract AttachmentIntType(Int) from Int
+abstract AttachmentType(Int) from Int
 {
 	var REGION = 0;
-	//var REGIONSEQUENCE = "regionsequence";
 	var BOUNDINGBOX = 1;
 	var MESH = 2;
 	var LINKEDMESH = 3;

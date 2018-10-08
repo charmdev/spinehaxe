@@ -408,7 +408,7 @@ class SkeletonBinary
 		var type:Int = ReadByte(input);
 		switch (type) 
 		{
-			case 0: //AttachmentType.Region:
+			case AttachmentType.REGION:
 				var path:String = ReadString(input);
 				var rotation:Float = ReadFloat(input);
 				var x:Float = ReadFloat(input);
@@ -445,7 +445,7 @@ class SkeletonBinary
 				region.updateOffset();
 				return region;
 			
-			case 1: //AttachmentType.Boundingbox:
+			case AttachmentType.BOUNDINGBOX:
 				var vertexCount:Int = ReadVarint(input, true);
 				var vertices:Vertices = ReadVertices(input, vertexCount);
 				if (nonessential) 
@@ -463,7 +463,7 @@ class SkeletonBinary
 				box.bones = vertices.bones;      
 				return box;
 			
-			case 2: // AttachmentType.Mesh:
+			case AttachmentType.MESH:
 				var path:String = ReadString(input);
 				var color:RGBA = ReadInt(input);
 				var vertexCount:Int = ReadVarint(input, true);			
@@ -512,7 +512,7 @@ class SkeletonBinary
 				}
 				return mesh;
 			
-			case 3: //AttachmentType.Linkedmesh:
+			case AttachmentType.LINKEDMESH:
 				var path:String = ReadString(input);
 				var color:RGBA = ReadInt(input);
 				var skinName:String = ReadString(input);
@@ -552,7 +552,7 @@ class SkeletonBinary
 				linkedMeshes.push(new LinkedMesh(mesh, skinName, slotIndex, parent));
 				return mesh;
 			
-			case 4: //AttachmentType.Path:
+			case AttachmentType.PATH:
 				var closed:Bool = ReadBoolean(input);
 				var constantSpeed:Bool = ReadBoolean(input);
 				var vertexCount:Int = ReadVarint(input, true);

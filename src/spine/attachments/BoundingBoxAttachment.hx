@@ -31,6 +31,7 @@
 
 package spine.attachments;
 
+import spine.attachments.AttachmentType.AttachmentIntType;
 import spine.attachments.VertexAttachment;
 
 class BoundingBoxAttachment extends VertexAttachment
@@ -39,6 +40,6 @@ class BoundingBoxAttachment extends VertexAttachment
 	{
 		super(name);
 		
-		type = AttachmentType.BOUNDINGBOX;
+		type = AttachmentIntType.BOUNDINGBOX;
 	}
 }

@@ -100,10 +100,8 @@ class SkeletonJson
 	public function readSkeletonData(object: String, name: String = null): SkeletonData
 	{
 		if (object == null)
-		{
 			throw "object cannot be null.";
-		}
-
+		
 		var root: TSpineData = Json.parse( Std.string(object) );
 		
 		var skeletonData: SkeletonData = new SkeletonData();
@@ -896,7 +894,7 @@ class SkeletonJson
 		if (hexString.length != 8)
 			throw 'Color hexidecimal length must be 8, recieved: ${hexString}';
 		
-		return Std.parseInt("0x" + hexString.substring(colorIndex * 2, colorIndex * 2 + 2)) / 255;
+		return Std.parseInt( "0x" + hexString.substring(colorIndex * 2, colorIndex * 2 + 2) ) / 255;
 	}
 
 	private static function getFloatArray(raw: Array<Float>, scale: Float): Vector<Float>

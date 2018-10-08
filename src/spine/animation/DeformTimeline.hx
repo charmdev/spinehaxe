@@ -33,7 +33,6 @@ package spine.animation;
 
 import haxe.ds.Vector;
 import spine.attachments.Attachment;
-import spine.attachments.AttachmentType;
 import spine.attachments.VertexAttachment;
 import spine.Event;
 import spine.Skeleton;
@@ -52,6 +51,8 @@ class DeformTimeline extends CurveTimeline
 		
 		frames = ArrayUtils.allocFloat(frameCount);
 		frameVertices = new Vector<Vector<Float>>( frameCount );
+		
+		type = TimelineType.DEFORM;
 	}
 
 	override public function getPropertyId(): Int 
@@ -70,13 +71,10 @@ class DeformTimeline extends CurveTimeline
 	override public function apply(skeleton: Skeleton, lastTime: Float, time: Float, firedEvents: Array<Event>, alpha: Float, setupPose: Bool, mixingOut: Bool): Void
 	{
 		var slot: Slot = skeleton.slots[slotIndex];
-		var slotAttachment: Attachment = slot.attachment;
-		
-	//	if ( !(slotAttachment.type == AttachmentType.VERTEX) || !cast(slotAttachment, VertexAttachment).applyDeform(attachment) )
-		if ((slotAttachment == null) || !(slotAttachment.type == AttachmentType.VERTEX) || !(slotAttachment != attachment) )
+		var slotAttachment: Attachment = cast slot.attachment;
+		if ((slotAttachment == null) || !(VertexAttachment.isVertexAttachment(slotAttachment)) || !cast(slotAttachment, VertexAttachment).applyDeform(attachment))
 			return;
 
-		//var frames: Array<Float> = this.frames;
 		var verticesArray: Array<Float> = slot.attachmentVertices;
 		if (time < frames[0]) 
 		{

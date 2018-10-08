@@ -216,7 +216,7 @@ class Skeleton
 			sortPathConstraintAttachment(data.skins[ii], slotIndex, slotBone);
 
 		var attachment: Attachment = slot.attachment;
-		if (attachment.type == AttachmentType.PATH) 
+		if (attachment != null && attachment.type == AttachmentIntType.PATH) 
 			sortPathConstraintAttachment2(attachment, slotBone);
 
 		var constrained: Array<Bone> = constraint.bones;
@@ -262,7 +262,7 @@ class Skeleton
 
 	private function sortPathConstraintAttachment2(attachment: Attachment, slotBone: Bone): Void
 	{
-		var pathAttachment: PathAttachment = attachment.type == AttachmentType.PATH ? cast attachment : null;
+		var pathAttachment:PathAttachment = (attachment.type == AttachmentIntType.PATH) ? cast attachment : null;
 		if (pathAttachment == null)
 			return;
 		

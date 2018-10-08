@@ -50,6 +50,8 @@ class PathConstraintPositionTimeline extends CurveTimeline
 	{
 		super(frameCount);
 		frames = [];
+		
+		type = TimelineType.PATH_CONSTRAINT_POSITION;
 	}
 	
 	override public function getPropertyId(): Int 

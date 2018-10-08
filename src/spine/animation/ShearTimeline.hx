@@ -10,6 +10,8 @@ class ShearTimeline extends TranslateTimeline
 	public function new(frameCount: Int)
 	{
 		super(frameCount);
+		
+		type = TimelineType.SHEAR;
 	}
 	
 	override public function getPropertyId(): Int 

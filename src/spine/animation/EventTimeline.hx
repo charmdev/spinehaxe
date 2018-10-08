@@ -38,12 +38,12 @@ import spine.animation.Timeline;
 
 class EventTimeline implements Timeline
 {
+	public var type:TimelineType;
+	
 	public var frameCount(get, never): Int;
 
 	public var frames: Vector<Float>;  // time, ...  
 	public var events: Vector<Event>;
-	
-	public var type:TimelineType;
 
 	public function new(frameCount: Int)
 	{

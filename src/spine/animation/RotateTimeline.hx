@@ -50,6 +50,8 @@ class RotateTimeline extends CurveTimeline
 	{
 		super(frameCount);
 		frames = [];
+		
+		type = TimelineType.ROTATE;
 	}
 
 	override public function getPropertyId(): Int 

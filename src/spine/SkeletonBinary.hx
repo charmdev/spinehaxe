@@ -7,6 +7,7 @@ import haxe.io.BytesInput;
 import haxe.io.Input;
 import haxe.io.Path;
 import spine.SkeletonJson.LinkedMesh;
+import spine.TransformMode.TransformIntMode;
 import spine.animation.Animation;
 import spine.animation.AttachmentTimeline;
 import spine.animation.ColorTimeline;
@@ -92,11 +93,13 @@ class SkeletonBinary
 	 * Helper object for reading color values
 	 */
 	private static var rgba:RGBA;
+	
+	private static var buffer:Bytes;
 
 	public var scale:Float;
 
 	private var attachmentLoader:AttachmentLoader;
-	private var buffer:Bytes; // = new byte[32];
+	
 	private var linkedMeshes:Array<LinkedMesh> = new Array<LinkedMesh>();
 	
 	public function new(attachmentLoader:AttachmentLoader) 
@@ -107,8 +110,12 @@ class SkeletonBinary
 			rgba = new RGBA();
 		}
 		
+		if (buffer == null)
+		{
+			buffer = Bytes.alloc(32);
+		}
+		
 		this.attachmentLoader = attachmentLoader;
-		buffer = Bytes.alloc(32);
 		scale = 1;
 	}
 	
@@ -128,14 +135,6 @@ class SkeletonBinary
 		skeletonData.name = name;
 		return skeletonData;
 	}
-
-	public static var /*TransformMode[]*/ TransformModeValues:Array<Int> = [
-		0,		// TransformMode.Normal
-		7, 		// TransformMode.OnlyTranslation
-		1,		// TransformMode.NoRotationOrReflection
-		2,		// TransformMode.NoScale
-		6		// TransformMode.NoScaleOrReflection
-	];
 
 	public function readSkeletonDataFromInput(input:Input):SkeletonData 
 	{
@@ -184,7 +183,8 @@ class SkeletonBinary
 			data.shearX = ReadFloat(input);
 			data.shearY = ReadFloat(input);
 			data.length = ReadFloat(input) * scale;
-			data.transformMode = TransformModeValues[ReadVarint(input, true)];
+			
+			data.transformMode = ReadVarint(input, true);
 			
 			if (nonessential) 
 			{
@@ -405,7 +405,7 @@ class SkeletonBinary
 		if (name == null) 
 			name = attachmentName;
 		
-		var type:Int = /*(AttachmentType)*/ input.readByte();
+		var type:Int = ReadByte(input);
 		switch (type) 
 		{
 			case 0: //AttachmentType.Region:
@@ -599,8 +599,8 @@ class SkeletonBinary
 			return vertices;
 		}
 		
-		var weights:Vector<Float> = ArrayUtils.allocFloat(verticesLength * 3 * 3); // new ExposedList<float>(verticesLength * 3 * 3);
-		var bonesArray:Array<Int> = []; // new ExposedList<int>(verticesLength * 3);
+		var weights:Vector<Float> = ArrayUtils.allocFloat(verticesLength * 3 * 3);
+		var bonesArray:Array<Int> = [];
 		var weightsIndex:Int = 0;
 		for (i in 0...vertexCount) 
 		{
@@ -622,7 +622,7 @@ class SkeletonBinary
 	
 	private function ReadFloatArray(input:Input, n:Int, scale:Float):Vector<Float>
 	{
-		var array:Vector<Float> = ArrayUtils.allocFloat(n); // new float[n];
+		var array:Vector<Float> = ArrayUtils.allocFloat(n);
 		if (scale == 1) 
 		{
 			for (i in 0...n)
@@ -644,9 +644,9 @@ class SkeletonBinary
 	private function ReadShortArray(input:Input):Array<Int> 
 	{
 		var n:Int = ReadVarint(input, true);
-		var array:Array<Int> = []; // n is the length of this array
+		var array:Array<Int> = [];
 		for (i in 0...n) 
-			array[i] = (input.readByte() << 8) | input.readByte();
+			array[i] = (ReadByte(input) << 8) | ReadByte(input);
 		
 		return array;
 	}
@@ -665,7 +665,7 @@ class SkeletonBinary
 			var nn = ReadVarint(input, true);
 			for (ii in 0...nn) 
 			{
-				var timelineType:Int = input.readByte();
+				var timelineType:Int = ReadByte(input);
 				var frameCount:Int = ReadVarint(input, true);
 				
 				switch (timelineType) 
@@ -714,7 +714,7 @@ class SkeletonBinary
 			var nn = ReadVarint(input, true);
 			for (ii in 0...nn) 
 			{
-				var timelineType:Int = input.readByte();
+				var timelineType:Int = ReadByte(input);
 				var frameCount:Int = ReadVarint(input, true);
 				switch (timelineType) 
 				{
@@ -816,7 +816,7 @@ class SkeletonBinary
 			var nn = ReadVarint(input, true);
 			for (ii in 0...nn) 
 			{
-				var timelineType:Int = input.readByte(); //  ReadSByte(input); // TODO: check it...
+				var timelineType:Int = ReadByte(input);
 				var frameCount:Int = ReadVarint(input, true);
 				switch (timelineType) 
 				{
@@ -953,14 +953,14 @@ class SkeletonBinary
 			{
 				var time:Float = ReadFloat(input);
 				var offsetCount:Int = ReadVarint(input, true);
-				var drawOrder:Array<Int> = []; // new int[slotCount];
+				var drawOrder:Array<Int> = [];
 				var ii:Int = slotCount - 1;
 				while (ii >= 0)
 				{
 					drawOrder[ii] = -1;
 					ii--;
 				}
-				var unchanged:Array<Int> = []; // new int[slotCount - offsetCount];
+				var unchanged:Array<Int> = [];
 				var originalIndex:Int = 0;
 				var unchangedIndex:Int = 0;
 				for (ii in 0...offsetCount) 
@@ -1016,7 +1016,7 @@ class SkeletonBinary
 	
 	private function ReadCurve(input:Input, frameIndex:Int, timeline:CurveTimeline):Void 
 	{
-		switch (input.readByte()) 
+		switch (ReadByte(input)) 
 		{
 			case CURVE_STEPPED:
 				timeline.setStepped(frameIndex);
@@ -1029,55 +1029,60 @@ class SkeletonBinary
 		}
 	}
 	
-	private static function ReadSByte(input:Input):Int // TODO: check it and all places where it's used
+	private inline function ReadByte(input:Input):Int
 	{
-		var value:Int = input.readByte();
+		return input.readByte();
+	}
+	
+	private function ReadSByte(input:Input):Int
+	{
+		var value:Int = ReadByte(input);
 		if (value == -1) throw "End of stream exception";
 		return (value > 127) ? -1 : 1;
 	}
 	
-	private static function ReadBoolean(input:Input):Bool
+	private function ReadBoolean(input:Input):Bool
 	{
-		return (input.readByte() != 0);
+		return (ReadByte(input) != 0);
 	}
 	
-	private static function ReadFloat(input:Input):Float
+	private function ReadFloat(input:Input):Float
 	{
-		floatBuffer.set(3, input.readByte());
-		floatBuffer.set(2, input.readByte());
-		floatBuffer.set(1, input.readByte());
-		floatBuffer.set(0, input.readByte());
+		floatBuffer.set(3, ReadByte(input));
+		floatBuffer.set(2, ReadByte(input));
+		floatBuffer.set(1, ReadByte(input));
+		floatBuffer.set(0, ReadByte(input));
 		return floatBuffer.getFloat(0);
 	}
 	
-	private static function ReadInt(input:Input):RGBA 
+	private function ReadInt(input:Input):RGBA 
 	{
-		var r:Int = input.readByte();
-		var g:Int = input.readByte();
-		var b:Int = input.readByte();
-		var a:Int = input.readByte();
+		var r:Int = ReadByte(input);
+		var g:Int = ReadByte(input);
+		var b:Int = ReadByte(input);
+		var a:Int = ReadByte(input);
 		rgba.set(r, g, b, a);
 		return rgba;
 	//	return (input.readByte() << 24) + (input.readByte() << 16) + (input.readByte() << 8) + input.readByte();
 	}
 	
-	private static function ReadVarint(input:Input, optimizePositive:Bool):Int
+	private function ReadVarint(input:Input, optimizePositive:Bool):Int
 	{
-		var b:Int = input.readByte();
+		var b:Int = ReadByte(input);
 		var result:Int = b & 0x7F;
 		if ((b & 0x80) != 0) 
 		{
-			b = input.readByte();
+			b = ReadByte(input);
 			result |= (b & 0x7F) << 7;
 			if ((b & 0x80) != 0) 
 			{
-				b = input.readByte();
+				b = ReadByte(input);
 				result |= (b & 0x7F) << 14;
 				if ((b & 0x80) != 0) 
 				{
-					b = input.readByte();
+					b = ReadByte(input);
 					result |= (b & 0x7F) << 21;
-					if ((b & 0x80) != 0) result |= (input.readByte() & 0x7F) << 28;
+					if ((b & 0x80) != 0) result |= (ReadByte(input) & 0x7F) << 28;
 				}
 			}
 		}
@@ -1100,13 +1105,12 @@ class SkeletonBinary
 		}
 		
 		byteCount--;
-		var buffer:Bytes = this.buffer;
 		if (buffer.length < byteCount) buffer = Bytes.alloc(byteCount);
 		ReadFully(input, buffer, 0, byteCount);
 		return buffer.getString(0, byteCount);
 	}
 
-	private static function ReadFully(input:Input, buffer:Bytes, offset:Int, length:Int):Void 
+	private function ReadFully(input:Input, buffer:Bytes, offset:Int, length:Int):Void 
 	{
 		while (length > 0) 
 		{

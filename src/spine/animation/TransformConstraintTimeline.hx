@@ -56,6 +56,8 @@ class TransformConstraintTimeline extends CurveTimeline
 	{
 		super(frameCount);
 		frames = [];
+		
+		type = TimelineType.TRANSFORM_CONSTRAINT;
 	}
 	
 	override public function getPropertyId(): Int 

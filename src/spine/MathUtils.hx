@@ -48,9 +48,13 @@ class MathUtils
 		return Math.sin(degrees * degRad);
 	}
 
-	public static inline function clamp(value: Float, min: Float, max: Float): Float
+	public static function clamp(value: Float, min: Float, max: Float): Float
 	{
-		return (value < min) ? min : ((value > max) ? max : value); 
+		/*if (value < min) return min;
+		if (value > max) return max;
+		return value;*/
+		
+		return (value < min) ? min : ((value > max) ? max : value);
 	}
 	
 	public static inline function maxInt(): Int

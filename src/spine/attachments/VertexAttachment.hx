@@ -35,9 +35,16 @@ import haxe.ds.Vector;
 import spine.Bone;
 import spine.Skeleton;
 import spine.Slot;
+import spine.attachments.AttachmentType.AttachmentIntType;
 
 class VertexAttachment extends Attachment
 {
+	public static inline function isVertexAttachment(attachment:Attachment):Bool
+	{
+		var type = attachment.type;
+		return (type == AttachmentIntType.MESH || type == AttachmentIntType.BOUNDINGBOX || type == AttachmentIntType.PATH);
+	}
+	
 	public var bones: Array<Int>;
 	public var vertices: Vector<Float>;
 	public var worldVerticesLength: Int;
@@ -45,8 +52,6 @@ class VertexAttachment extends Attachment
 	public function new(name : String)
 	{
 		super(name);
-		
-		type = AttachmentType.VERTEX;
 	}
 
 	public function computeWorldVertices(slot: Slot, worldVertices: Vector<Float>): Void
@@ -206,6 +211,6 @@ class VertexAttachment extends Attachment
 	/** Returns true if a deform originally applied to the specified attachment should be applied to this attachment. */
 	public inline function applyDeform(sourceAttachment: VertexAttachment): Bool
 	{
-		return this == sourceAttachment;
+		return (this == sourceAttachment);
 	}
 }

@@ -30,7 +30,6 @@
  *****************************************************************************/
 
 package spine;
-
 import spine.TransformMode.TransformIntMode;
 
 class BoneData

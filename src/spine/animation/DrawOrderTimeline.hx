@@ -39,12 +39,12 @@ import spine.animation.Timeline;
 
 class DrawOrderTimeline implements Timeline
 {
+	public var type:TimelineType;
+	
 	public var frameCount(get, never): Int;
 
 	public var frames: Vector<Float>;  // time, ...  
 	public var drawOrders: Vector<Array<Int>>;
-	
-	public var type:TimelineType;
 
 	public function new(frameCount: Int)
 	{

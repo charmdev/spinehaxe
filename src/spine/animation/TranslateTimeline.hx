@@ -52,6 +52,8 @@ class TranslateTimeline extends CurveTimeline
 	{
 		super(frameCount);
 		frames = [];
+		
+		type = TimelineType.TRANSLATE;
 	}
 
 	override public function getPropertyId(): Int 

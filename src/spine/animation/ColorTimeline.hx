@@ -58,6 +58,8 @@ class ColorTimeline extends CurveTimeline
 	{
 		super(frameCount);
 		frames = new Array<Float>();
+		
+		type = TimelineType.COLOR;
 	}
 
 	override public function getPropertyId(): Int 

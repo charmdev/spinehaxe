@@ -40,6 +40,8 @@ class PathConstraintSpacingTimeline extends PathConstraintPositionTimeline
 	public function new(frameCount: Int)
 	{
 		super(frameCount);
+		
+		type = TimelineType.PATH_CONSTRAINT_SPACING;
 	}
 	
 	override public function getPropertyId(): Int 

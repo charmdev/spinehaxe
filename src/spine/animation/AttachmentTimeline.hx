@@ -37,14 +37,14 @@ import spine.animation.Timeline;
 
 class AttachmentTimeline implements Timeline
 {
+	public var type:TimelineType;
+	
 	public var frameCount(get, never): Int;
 
 	public var slotIndex: Int;
 	public var frames: Array<Float>;  // time, ...  
 	public var attachmentNames: Array<String>;
 
-	public var type:TimelineType;
-	
 	public function new(frameCount: Int)
 	{
 		frames = [];

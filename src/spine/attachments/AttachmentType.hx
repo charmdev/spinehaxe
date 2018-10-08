@@ -42,3 +42,16 @@ abstract AttachmentType(String) from String
 	var PATH = "path";
 	var VERTEX = "vertex";
 }
+
+@:enum
+abstract AttachmentIntType(Int) from Int
+{
+	var REGION = 0;
+	//var REGIONSEQUENCE = "regionsequence";
+	var BOUNDINGBOX = 1;
+	var MESH = 2;
+	var LINKEDMESH = 3;
+	var PATH = 4;
+	var VERTEX = 4;
+}
+

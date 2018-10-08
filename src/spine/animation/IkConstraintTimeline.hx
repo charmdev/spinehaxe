@@ -53,6 +53,8 @@ class IkConstraintTimeline extends CurveTimeline
 	{
 		super(frameCount);
 		frames = [];
+		
+		type = TimelineType.IK_CONSTRAINT;
 	}
 
 	override public function getPropertyId(): Int 

@@ -52,6 +52,8 @@ class PathConstraintMixTimeline extends CurveTimeline
 	{
 		super(frameCount);
 		frames = [];
+		
+		type = TimelineType.PATH_CONSTRAINT_MIX;
 	}
 
 	override public function getPropertyId(): Int

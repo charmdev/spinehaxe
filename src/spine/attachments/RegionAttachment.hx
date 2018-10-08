@@ -32,6 +32,7 @@
 package spine.attachments;
 
 import spine.Bone;
+import spine.attachments.AttachmentType.AttachmentIntType;
 
 class RegionAttachment extends Attachment
 {
@@ -74,7 +75,7 @@ class RegionAttachment extends Attachment
 		//offset.length = 8;
 		//uvs.length = 8;
 		
-		type = AttachmentType.REGION;
+		type = AttachmentIntType.REGION;
 	}
     
 	public function setUVs(u: Float, v: Float, u2: Float, v2: Float, rotate: Bool): Void

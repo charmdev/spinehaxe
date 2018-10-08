@@ -52,12 +52,12 @@ class Atlas
 		{
 			load(Std.string(object), textureLoader);
 		}
-#if !js
+		#if !js
 		else if (Std.is(object, ByteArray)) 
 		{
 			load(cast(object, ByteArray).readUTFBytes(cast(object, ByteArray).length), textureLoader);
 		}
-#end
+		#end
 		else 
 		{
 			throw 'object must be a TextureAtlas or AttachmentLoader.';
@@ -208,11 +208,7 @@ class Reader
 
 	public function trim(value: String): String
 	{
-#if !js
-		var regex = new EReg("^\\s+|\\s+$", "gs");
-#else
 		var regex = new EReg("^\\s+|\\s+$", "g");
-#end
 		return regex.replace(value, "");
 	}
 

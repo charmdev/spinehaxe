@@ -41,6 +41,8 @@ class ScaleTimeline extends TranslateTimeline
 	public function new(frameCount: Int)
 	{
 		super(frameCount);
+		
+		type = TimelineType.SCALE;
 	}
 	
 	override public function getPropertyId(): Int 

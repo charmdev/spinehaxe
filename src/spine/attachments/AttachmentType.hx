@@ -53,4 +53,3 @@ abstract AttachmentType(Int) from Int
 	var PATH = 4;
 	var VERTEX = 4;
 }
-

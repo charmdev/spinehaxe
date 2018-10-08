@@ -1,7 +1,6 @@
 package spine;
-import format.swf.Data.RGBA;
+
 import haxe.ds.Vector;
-import haxe.io.BufferInput;
 import haxe.io.Bytes;
 import haxe.io.BytesInput;
 import haxe.io.Input;
@@ -33,8 +32,11 @@ import spine.attachments.MeshAttachment;
 import spine.attachments.PathAttachment;
 import spine.attachments.RegionAttachment;
 import spine.attachments.VertexAttachment;
+
+#if !(js || flash)
 import sys.io.File;
 import sys.io.FileInput;
+#end
 
 /******************************************************************************
  * Spine Runtimes Software License v2.5
@@ -121,11 +123,15 @@ class SkeletonBinary
 	
 	public function readSkeletonDataFromPath(path:String):SkeletonData 
 	{
+		#if !(js || flash)
 		var input:FileInput = File.read(path, true);
 		var skeletonData:SkeletonData = readSkeletonDataFromInput(input);
 		input.close();
 		skeletonData.name = Path.withoutExtension(Path.withoutDirectory(path));
 		return skeletonData;
+		#else
+		return null;
+		#end
 	}
 	
 	public function readSkeletonDataFromBytes(bytes:Bytes, name:String):SkeletonData 

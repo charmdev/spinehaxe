@@ -68,7 +68,7 @@ import sys.io.FileInput;
  * POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
  
-class SkeletonBinary 
+class SkeletonBinary
 {
 	public static inline var BONE_ROTATE:Int = 0;
 	public static inline var BONE_TRANSLATE:Int = 1;
@@ -103,6 +103,8 @@ class SkeletonBinary
 	private var attachmentLoader:AttachmentLoader;
 	
 	private var linkedMeshes:Array<LinkedMesh> = new Array<LinkedMesh>();
+	
+	private var skipNewFeatures:Bool = false;
 	
 	public function new(attachmentLoader:AttachmentLoader) 
 	{
@@ -160,6 +162,15 @@ class SkeletonBinary
 			skeletonData.version = null;
 		}
 		
+		skipNewFeatures = false;
+		if (skeletonData.version != null)
+		{
+			if (Std.parseInt(skeletonData.version.charAt(2)) > 5)
+			{
+				skipNewFeatures = true;
+			}
+		}
+		
 		skeletonData.width = ReadFloat(input);
 		skeletonData.height = ReadFloat(input);
 
@@ -212,6 +223,12 @@ class SkeletonBinary
 			slotData.g = color.g / 255;
 			slotData.b = color.b / 255;
 			slotData.a = color.a / 255;
+			
+			if (skipNewFeatures)
+			{
+				var darkColor:RGBA = ReadInt(input); // 0x00rrggbb // ignore it...
+			}
+			
 			slotData.attachmentName = ReadString(input);
 			slotData.blendMode = ReadVarint(input, true);
 			skeletonData.slots.push(slotData);
@@ -246,6 +263,13 @@ class SkeletonBinary
 				data.bones.push(skeletonData.bones[ReadVarint(input, true)]);
 			}
 			data.target = skeletonData.bones[ReadVarint(input, true)];
+			
+			if (skipNewFeatures)
+			{
+				/*data.local =*/ ReadBoolean(input);
+				/*data.relative =*/ ReadBoolean(input);
+			}
+			
 			data.offsetRotation = ReadFloat(input);
 			data.offsetX = ReadFloat(input) * scale;
 			data.offsetY = ReadFloat(input) * scale;
@@ -409,7 +433,9 @@ class SkeletonBinary
 
 		var name:String = ReadString(input);
 		if (name == null) 
+		{
 			name = attachmentName;
+		}
 		
 		var type:Int = ReadByte(input);
 		switch (type) 
@@ -587,6 +613,25 @@ class SkeletonBinary
 				path.lengths = lengths;
 				return path;
 			
+			// features from spine 3.6, we'll skip them, since we don't use them...
+			case 5: // AttachmentType.point:
+				/*var rotation:Float =*/ ReadFloat(input);
+				/*var x:Float =*/ ReadFloat(input);
+				/*var y:Float =*/ ReadFloat(input);
+				if (nonessential) 
+				{
+					ReadInt(input);
+				}
+			
+			case 6: // AttachmentType.clipping:
+				/*var endSlotIndex:Int =*/ ReadVarint(input, true);
+				var vertexCount:Int = ReadVarint(input, true);
+				var vertices:Vertices = ReadVertices(input, vertexCount);
+				if (nonessential) 
+				{
+					ReadInt(input);
+				}
+				
 			default:
 				
 		}

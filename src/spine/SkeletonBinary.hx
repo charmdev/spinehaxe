@@ -87,20 +87,20 @@ class SkeletonBinary
 	public static inline var CURVE_STEPPED:Int = 1;
 	public static inline var CURVE_BEZIER:Int = 2;
 	
+	public var attachmentLoader:AttachmentLoader;
+	
 	/**
 	 * Helper Bytes for reading float values from data
 	 */
-	private static var floatBuffer:Bytes;
+	private var floatBuffer:Bytes;
 	/**
 	 * Helper object for reading color values
 	 */
-	private static var rgba:RGBA;
+	private var rgba:RGBA;
 	
-	private static var buffer:Bytes;
+	private var buffer:Bytes;
 
 	public var scale:Float;
-
-	private var attachmentLoader:AttachmentLoader;
 	
 	private var linkedMeshes:Array<LinkedMesh> = new Array<LinkedMesh>();
 	
@@ -108,19 +108,12 @@ class SkeletonBinary
 	
 	public function new(attachmentLoader:AttachmentLoader) 
 	{
-		if (floatBuffer == null)
-		{
-			floatBuffer = Bytes.alloc(4);
-			rgba = new RGBA();
-		}
-		
-		if (buffer == null)
-		{
-			buffer = Bytes.alloc(32);
-		}
-		
 		this.attachmentLoader = attachmentLoader;
 		scale = 1;
+		
+		floatBuffer = Bytes.alloc(4);
+		buffer = Bytes.alloc(32);
+		rgba = new RGBA();
 	}
 	
 	public function readSkeletonDataFromPath(path:String):SkeletonData 

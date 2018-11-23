@@ -84,10 +84,11 @@ class Skin
 			if (slotAttachment != null && slotIndex < oldSkin.attachments.length) 
 			{
 				var map: Map<String, Attachment> = oldSkin.attachments[slotIndex];
+				if (map == null) continue;
 				for (name in map.keys())
 				{
 					var skinAttachment: Attachment = map[name];
-					if (slotAttachment == skinAttachment) 
+					if (slotAttachment == skinAttachment)
 					{
 						var attachment: Attachment = getAttachment(slotIndex, name);
 						if (attachment != null)

@@ -640,7 +640,7 @@ class AnimationState
 		entry.trackTime = 0;
 		entry.trackLast = -1;
 		entry.nextTrackLast = -1;
-		entry.trackEnd = MathUtils.maxInt();
+		entry.trackEnd = Math.POSITIVE_INFINITY;//MathUtils.maxInt();
 		entry.timeScale = 1;
 
 		entry.alpha = 1;

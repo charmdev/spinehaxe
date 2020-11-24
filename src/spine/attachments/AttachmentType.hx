@@ -44,7 +44,7 @@ abstract AttachmentStringType(String) from String
 }
 
 @:enum
-abstract AttachmentType(Int) from Int
+abstract AttachmentType(Int) from Int to Int
 {
 	var REGION = 0;
 	var BOUNDINGBOX = 1;

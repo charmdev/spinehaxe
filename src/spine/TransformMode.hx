@@ -32,7 +32,7 @@
 package spine;
 
 @:enum
-abstract TransformMode(String) from String
+abstract TransformMode(String) from String to String
 {
 	var NORMAL = "normal";
 	var ONLY_TRANSLATION = "onlyTranslation";

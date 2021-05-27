@@ -35,41 +35,41 @@ import spine.Event;
 import spine.Skeleton;
 import spine.animation.Timeline;
 
-class AttachmentTimeline implements Timeline
+class AttachmentTimeline extends Timeline
 {
-	public var type:TimelineType;
-	
-	public var frameCount(get, never): Int;
+	public var frameCount(get, never):Int;
 
-	public var slotIndex: Int;
-	public var frames: Array<Float>;  // time, ...  
-	public var attachmentNames: Array<String>;
+	public var slotIndex:Int;
+	public var frames:Array<Float>;  // time, ...  
+	public var attachmentNames:Array<String>;
 
-	public function new(frameCount: Int)
+	public function new(frameCount:Int)
 	{
+		super();
+		
 		frames = [];
 		attachmentNames = [];
 		
 		type = TimelineType.ATTACHMENT;
 	}
 	
-	public inline function getPropertyId(): Int 
+	override public inline function getPropertyId():Int 
 	{
-		var value: Int = TimelineType.ATTACHMENT;
+		var value:Int = TimelineType.ATTACHMENT;
 		return (value << 24) + slotIndex;
 	}
 	
 	/** Sets the time and value of the specified keyframe. */
-	public inline function setFrame(frameIndex: Int, time: Float, attachmentName: String): Void
+	public inline function setFrame(frameIndex:Int, time:Float, attachmentName:String):Void
 	{
 		frames[frameIndex] = time;
 		attachmentNames[frameIndex] = attachmentName;
 	}
 
-	public function apply(skeleton: Skeleton, lastTime: Float, time: Float, firedEvents: Array<Event>, alpha: Float, setupPose: Bool, mixingOut: Bool): Void
+	override public function apply(skeleton:Skeleton, lastTime:Float, time:Float, firedEvents:Array<Event>, alpha:Float, setupPose:Bool, mixingOut:Bool):Void
 	{
-		var attachmentName: String;
-		var slot: Slot = skeleton.slots[slotIndex];
+		var attachmentName:String;
+		var slot:Slot = skeleton.slots[slotIndex];
 		if (mixingOut && setupPose) 
 		{			
 			attachmentName = slot.data.attachmentName;
@@ -88,11 +88,15 @@ class AttachmentTimeline implements Timeline
 			return;
 		}
 		
-		var frameIndex: Int;
+		var frameIndex:Int;
 		if (time >= frames[frames.length - 1]) // Time is after last frame.
+		{
 			frameIndex = frames.length - 1;
+		}
 		else
+		{
 			frameIndex = Animation.binarySearch(frames, time, 1) - 1;
+		}
 
 		attachmentName = attachmentNames[frameIndex];
 		skeleton.slots[slotIndex].attachment = (attachmentName == null) ? null : skeleton.getAttachmentForSlotIndex(slotIndex, attachmentName);
@@ -100,7 +104,7 @@ class AttachmentTimeline implements Timeline
 	
 	// getters / setters
 	
-	private inline function get_frameCount(): Int
+	private inline function get_frameCount():Int
 	{
 		return frames.length;
 	}

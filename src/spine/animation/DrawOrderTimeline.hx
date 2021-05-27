@@ -37,81 +37,96 @@ import spine.Skeleton;
 import spine.Slot;
 import spine.animation.Timeline;
 
-class DrawOrderTimeline implements Timeline
+class DrawOrderTimeline extends Timeline
 {
-	public var type:TimelineType;
-	
-	public var frameCount(get, never): Int;
+	public var frameCount(get, never):Int;
 
-	public var frames: Vector<Float>;  // time, ...  
-	public var drawOrders: Vector<Array<Int>>;
+	public var frames:Vector<Float>;  // time, ...  
+	public var drawOrders:Vector<Array<Int>>;
 
-	public function new(frameCount: Int)
+	public function new(frameCount:Int)
 	{
-		frames = ArrayUtils.allocFloat( frameCount );
-		drawOrders = new Vector<Array<Int>>( frameCount );
+		super();
+		
+		frames = ArrayUtils.allocFloat(frameCount);
+		drawOrders = new Vector<Array<Int>>(frameCount);
 		
 		type = TimelineType.DRAW_ORDER;
 	}
 	
-	public inline function getPropertyId(): Int 
+	override public inline function getPropertyId():Int 
 	{
-		var value: Int = TimelineType.DRAW_ORDER;
+		var value:Int = TimelineType.DRAW_ORDER;
 		return (value << 24);
 	}
 	
 	/** Sets the time and value of the specified keyframe. */
-	public inline function setFrame(frameIndex: Int, time: Float, drawOrder: Array<Int>): Void
+	public inline function setFrame(frameIndex:Int, time:Float, drawOrder:Array<Int>):Void
 	{
 		frames[frameIndex] = time;
 		drawOrders[frameIndex] = drawOrder;
 	}
 
-	public function apply(skeleton: Skeleton, lastTime: Float, time: Float, firedEvents: Array<Event>, alpha: Float, setupPose: Bool, mixingOut: Bool): Void
+	override public function apply(skeleton:Skeleton, lastTime:Float, time:Float, firedEvents:Array<Event>, alpha:Float, setupPose:Bool, mixingOut:Bool):Void
 	{
 		if (mixingOut && setupPose) 
 		{
 			for (ii in 0...skeleton.slots.length)
-				skeleton.drawOrder[ii] = skeleton.slots[ii];
-			
-			return;
-		}
-
-		var drawOrder: Array<Slot> = skeleton.drawOrder;
-		var slots: Array<Slot> = skeleton.slots;
-		var slot: Slot;
-		var i: Int = 0;
-		if (time < frames[0]) 
-		{
-			if (setupPose)
 			{
-				for(slot in slots)
-					drawOrder[i++] = slot;			
+				skeleton.drawOrder[ii] = skeleton.slots[ii];
 			}
 			
 			return;
 		}
 
-		var frameIndex: Int;
-		if (time >= frames[frames.length - 1]) // Time is after last frame.  
-			frameIndex = frames.length - 1
-		else 
-			frameIndex = Animation.binarySearch1(frames, time) - 1;
+		var drawOrder:Array<Slot> = skeleton.drawOrder;
+		var slots:Array<Slot> = skeleton.slots;
+		var slot:Slot;
+		var i:Int = 0;
+		if (time < frames[0]) 
+		{
+			if (setupPose)
+			{
+				for (slot in slots)
+				{
+					drawOrder[i++] = slot;			
+				}
+			}
+			
+			return;
+		}
 
-		var drawOrderToSetupIndex: Array<Int> = drawOrders[frameIndex];
+		var frameIndex:Int;
+		if (time >= frames[frames.length - 1]) // Time is after last frame.  
+		{
+			frameIndex = frames.length - 1;
+		}
+		else 
+		{
+			frameIndex = Animation.binarySearch1(frames, time) - 1;
+		}
+
+		var drawOrderToSetupIndex:Array<Int> = drawOrders[frameIndex];
 		i = 0;
 		if (drawOrderToSetupIndex == null) 
 		{
 			for (slot in slots)
+			{
 				drawOrder[i++] = slot;
+			}
 		}
 		else 
 		{
 			for (setupIndex in drawOrderToSetupIndex)
+			{
 				drawOrder[i++] = slots[setupIndex];
+			}
 		}
 	}
 	
 	// getters / setters
-	private inline function get_frameCount(): Int return frames.length;
+	private inline function get_frameCount():Int 
+	{
+		return frames.length;
+	}
 }

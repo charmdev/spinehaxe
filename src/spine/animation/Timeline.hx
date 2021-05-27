@@ -34,10 +34,23 @@ package spine.animation;
 import spine.Event;
 import spine.Skeleton;
 
-interface Timeline
+class Timeline
 {
-	var type:TimelineType;
+	public var type:TimelineType;
+	
+	public function new()
+	{
+		
+	}
+	
 	/** Sets the value(s) for the specified time. */
-	function apply(skeleton: Skeleton, lastTime: Float, time: Float, firedEvents: Array<Event>, alpha: Float, setupPose: Bool, mixingOut: Bool): Void;
-	function getPropertyId(): Int;
+	public function apply(skeleton:Skeleton, lastTime:Float, time:Float, firedEvents:Array<Event>, alpha:Float, setupPose:Bool, mixingOut:Bool):Void
+	{
+		
+	}
+	
+	public function getPropertyId():Int
+	{
+		return -1;
+	}
 }

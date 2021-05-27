@@ -31,22 +31,28 @@
 
 package spine;
 
-class IkConstraint implements Constraint
+class IkConstraint extends Constraint
 {
-	public var data(get, never): IkConstraintData;
+	public var data(get, never):IkConstraintData;
 
-	public var bones: Array<Bone>;
-	public var target: Bone;
-	public var mix: Float;
-	public var bendDirection: Int;
+	public var bones:Array<Bone>;
+	public var target:Bone;
+	public var mix:Float;
+	public var bendDirection:Int;
 
-	public function new(data: IkConstraintData, skeleton: Skeleton)
+	public function new(data:IkConstraintData, skeleton:Skeleton)
 	{
+		super();
+		
 		if (data == null)
+		{
 			throw 'data cannot be null.';
-			
+		}
+		
 		if (skeleton == null)
+		{
 			'skeleton cannot be null.';
+		}
 		
 		_data = data;
 		mix = data.mix;
@@ -54,19 +60,21 @@ class IkConstraint implements Constraint
 
 		bones = [];
 		for (boneData in data.bones)
+		{
 			bones[bones.length] = skeleton.findBone(boneData.name);
+		}
 		
 		target = skeleton.findBone(data.target._name);
 	}
 
-	public inline function apply(): Void
+	public inline function apply():Void
 	{
 		update();
 	}
 
-	public inline function update(): Void
+	override public function update():Void
 	{
-		switch ( bones.length )
+		switch (bones.length)
 		{
 			case 1:
 				apply1(bones[0], target._worldX, target._worldY, mix);
@@ -76,37 +84,45 @@ class IkConstraint implements Constraint
 		}
 	}
 	
-	public function getOrder(): Float 
+	override public function getOrder():Float 
 	{
 		return _data.order;
 	}
 	
-	public function toString(): String
+	public function toString():String
 	{
 		return _data._name;
 	}
 
 	/** Adjusts the bone rotation so the tip is as close to the target position as possible. The target is specified in the world
 	* coordinate system. */
-	public static function apply1(bone: Bone, targetX: Float, targetY: Float, alpha: Float): Void
+	public static function apply1(bone:Bone, targetX:Float, targetY:Float, alpha:Float):Void
 	{
 		if (!bone.appliedValid) 
+		{
 			bone.updateAppliedTransform();
+		}
 		
-		var p: Bone = bone.parent;
-		var id: Float = 1 / (p.a * p.d - p.b * p.c);
-		var x: Float = targetX - p.worldX;
-		var y: Float = targetY - p.worldY;
-		var tx: Float = (x * p.d - y * p.b) * id - bone.ax;
-		var ty: Float = (y * p.a - x * p.c) * id - bone.ay;
-		var rotationIK: Float = Math.atan2(ty, tx) * MathUtils.radDeg - bone.ashearX - bone.arotation;
+		var p:Bone = bone.parent;
+		var id:Float = 1 / (p.a * p.d - p.b * p.c);
+		var x:Float = targetX - p.worldX;
+		var y:Float = targetY - p.worldY;
+		var tx:Float = (x * p.d - y * p.b) * id - bone.ax;
+		var ty:Float = (y * p.a - x * p.c) * id - bone.ay;
+		var rotationIK:Float = Math.atan2(ty, tx) * MathUtils.radDeg - bone.ashearX - bone.arotation;
 		if (bone.ascaleX < 0) 
+		{
 			rotationIK += 180;
-			
+		}
+		
 		if (rotationIK > 180) 
-			rotationIK -= 360
+		{
+			rotationIK -= 360;
+		}
 		else if (rotationIK < -180)
+		{
 			rotationIK += 360;
+		}
 		
 		bone.updateWorldTransformWith(bone.ax, bone.ay, bone.arotation + rotationIK * alpha, bone.ascaleX, bone.ascaleY, bone.ashearX, bone.ashearY);
 	}
@@ -114,7 +130,7 @@ class IkConstraint implements Constraint
 	/** Adjusts the parent and child bone rotations so the tip of the child is as close to the target position as possible. The
 	* target is specified in the world coordinate system.
 	* @param child Any descendant bone of the parent. */
-	public static function apply2(parent: Bone, child: Bone, targetX: Float, targetY: Float, bendDir: Int, alpha: Float): Void
+	public static function apply2(parent:Bone, child:Bone, targetX:Float, targetY:Float, bendDir:Int, alpha:Float):Void
 	{
 		if (alpha == 0) 
 		{
@@ -123,19 +139,23 @@ class IkConstraint implements Constraint
 		}
 		
 		if (!parent.appliedValid) 
+		{
 			parent.updateAppliedTransform();
-			
-		if (!child.appliedValid) 
-			child.updateAppliedTransform();
+		}
 		
-		var px: Float = parent.ax; 
-		var py: Float = parent.ay;
-		var psx: Float = parent.ascaleX;
-		var psy: Float = parent.ascaleY;
-		var csx: Float = child.ascaleX;
-		var os1: Int;
-		var os2: Int;
-		var s2: Int;
+		if (!child.appliedValid) 
+		{
+			child.updateAppliedTransform();
+		}
+		
+		var px:Float = parent.ax; 
+		var py:Float = parent.ay;
+		var psx:Float = parent.ascaleX;
+		var psy:Float = parent.ascaleY;
+		var csx:Float = child.ascaleX;
+		var os1:Int;
+		var os2:Int;
+		var s2:Int;
 		
 		if (psx < 0) 
 		{
@@ -161,17 +181,19 @@ class IkConstraint implements Constraint
 			os2 = 180;
 		}
 		else 
+		{
 			os2 = 0;
+		}
 		
-		var cx: Float = child.ax;
-		var cy: Float;
-		var cwx: Float;
-		var cwy: Float;
-		var a: Float = parent.a;
-		var b: Float = parent.b;
-		var c: Float = parent.c;
-		var d: Float = parent.d;
-		var u: Bool = Math.abs(psx - psy) <= 0.0001;
+		var cx:Float = child.ax;
+		var cy:Float;
+		var cwx:Float;
+		var cwy:Float;
+		var a:Float = parent.a;
+		var b:Float = parent.b;
+		var c:Float = parent.c;
+		var d:Float = parent.d;
+		var u:Bool = Math.abs(psx - psy) <= 0.0001;
 		
 		if (!u) 
 		{
@@ -186,35 +208,39 @@ class IkConstraint implements Constraint
 			cwy = c * cx + d * cy + parent.worldY;
 		}
 		
-		var pp: Bone = parent.parent;
+		var pp:Bone = parent.parent;
 		a = pp.a;
 		b = pp.b;
 		c = pp.c;
 		d = pp.d;
-		var id: Float = 1 / (a * d - b * c);
-		var x: Float = targetX - pp.worldX;
-		var y: Float = targetY - pp.worldY;
-		var tx: Float = (x * d - y * b) * id - px;
-		var ty: Float = (y * a - x * c) * id - py;
+		var id:Float = 1 / (a * d - b * c);
+		var x:Float = targetX - pp.worldX;
+		var y:Float = targetY - pp.worldY;
+		var tx:Float = (x * d - y * b) * id - px;
+		var ty:Float = (y * a - x * c) * id - py;
 		x = cwx - pp.worldX;
 		y = cwy - pp.worldY;
-		var dx: Float = (x * d - y * b) * id - px;
-		var dy: Float = (y * a - x * c) * id - py;
-		var l1: Float = Math.sqrt(dx * dx + dy * dy);
-		var l2: Float = child.data.length * csx;
-		var a1: Float = 0.0; //just for initialization
-		var a2: Float = 0.0; //just for initialization
+		var dx:Float = (x * d - y * b) * id - px;
+		var dy:Float = (y * a - x * c) * id - py;
+		var l1:Float = Math.sqrt(dx * dx + dy * dy);
+		var l2:Float = child.data.length * csx;
+		var a1:Float = 0.0; //just for initialization
+		var a2:Float = 0.0; //just for initialization
 
-		var breaker: Bool = false;
+		var breaker:Bool = false;
 
 		if (u) 
 		{
 			l2 *= psx;
-			var cos: Float = (tx * tx + ty * ty - l1 * l1 - l2 * l2) / (2 * l1 * l2);
+			var cos:Float = (tx * tx + ty * ty - l1 * l1 - l2 * l2) / (2 * l1 * l2);
 			if (cos < -1) 
-				cos = -1
+			{
+				cos = -1;
+			}
 			else if (cos > 1)
+			{
 				cos = 1;
+			}
 			
 			a2 = Math.acos(cos) * bendDir;
 			a = l1 + l2 * cos;
@@ -225,24 +251,24 @@ class IkConstraint implements Constraint
 		{
 			a = psx * l2;
 			b = psy * l2;
-			var aa: Float = a * a;
-			var bb: Float = b * b;
-			var dd: Float = tx * tx + ty * ty;
-			var ta: Float = Math.atan2(ty, tx);
+			var aa:Float = a * a;
+			var bb:Float = b * b;
+			var dd:Float = tx * tx + ty * ty;
+			var ta:Float = Math.atan2(ty, tx);
 			c = bb * l1 * l1 + aa * dd - aa * bb;
-			var c1: Float = -2 * bb * l1;
-			var c2: Float = bb - aa;
+			var c1:Float = -2 * bb * l1;
+			var c2:Float = bb - aa;
 			d = c1 * c1 - 4 * c2 * c;
 			if (d >= 0) 
 			{
-				var q: Float = Math.sqrt(d);
+				var q:Float = Math.sqrt(d);
 				if (c1 < 0)
 					q = -q;
 				
 				q = -(c1 + q) / 2;
-				var r0: Float = q / c2;
-				var r1: Float = c / q;
-				var r: Float = (Math.abs(r0) < Math.abs(r1)) ? r0 : r1;
+				var r0:Float = q / c2;
+				var r1:Float = c / q;
+				var r:Float = (Math.abs(r0) < Math.abs(r1)) ? r0 : r1;
 				if (r * r <= dd) 
 				{
 					y = Math.sqrt(dd - r * r) * bendDir;
@@ -254,14 +280,14 @@ class IkConstraint implements Constraint
 
 			if (!breaker) 
 			{
-				var minAngle: Float = 0;
-				var minDist: Float = Math.POSITIVE_INFINITY;
-				var minX: Float = 0;
-				var minY: Float = 0;
-				var maxAngle: Float = 0;
-				var maxDist: Float = 0;
-				var maxX: Float = 0;
-				var maxY: Float = 0;
+				var minAngle:Float = 0;
+				var minDist:Float = Math.POSITIVE_INFINITY;
+				var minX:Float = 0;
+				var minY:Float = 0;
+				var maxAngle:Float = 0;
+				var maxDist:Float = 0;
+				var maxX:Float = 0;
+				var maxY:Float = 0;
 				
 				x = l1 + a;
 				d = x * x;
@@ -281,7 +307,7 @@ class IkConstraint implements Constraint
 					minX = x;
 				}
 				
-				var angle: Float = Math.acos(-a * l1 / (aa - bb));
+				var angle:Float = Math.acos(-a * l1 / (aa - bb));
 				x = a * Math.cos(angle) + l1;
 				y = b * Math.sin(angle);
 				d = x * x + y * y;
@@ -312,26 +338,39 @@ class IkConstraint implements Constraint
 			}
 		}
 		
-		var os: Float = Math.atan2(cy, cx) * s2;
-		var rotation: Float = parent.arotation;
+		var os:Float = Math.atan2(cy, cx) * s2;
+		var rotation:Float = parent.arotation;
 		a1 = (a1 - os) * MathUtils.radDeg + os1 - rotation;
 		if (a1 > 180) 
-			a1 -= 360
+		{
+			a1 -= 360;
+		}
 		else if (a1 < -180)
+		{
 			a1 += 360;
+		}
+		
 		parent.updateWorldTransformWith(px, py, rotation + a1 * alpha, parent.ascaleX, parent.ascaleY, 0, 0);
 		
 		rotation = child.arotation;
 		a2 = ((a2 + os) * MathUtils.radDeg - child.ashearX) * s2 + os2 - rotation;
 		if (a2 > 180) 
-			a2 -= 360
+		{
+			a2 -= 360;
+		}
 		else if (a2 < -180)
+		{
 			a2 += 360;
+		}
+		
 		child.updateWorldTransformWith(cx, cy, rotation + a2 * alpha, child.ascaleX, child.ascaleY, child.ashearX, child.ashearY);
 	}
 	
 	// getters / setters
-	private inline function get_data(): IkConstraintData return _data;
+	private inline function get_data():IkConstraintData 
+	{
+		return _data;
+	}
 	
-	@:allow(spine) private var _data: IkConstraintData;
+	@:allow(spine) private var _data:IkConstraintData;
 }

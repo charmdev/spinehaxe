@@ -36,51 +36,57 @@ import spine.Skeleton;
 import spine.TransformMode.TransformIntMode;
 import spine.Updatable;
 
-class Bone implements Updatable
+class Bone extends Updatable
 {
-	public static var yDown: Bool;
+	public static var yDown:Bool;
 	
-	public var data(get, never): BoneData;
-	public var skeleton(get, never): Skeleton;
-	public var parent(get, never): Bone;
-	public var children(get, never): Array<Bone>;
-	public var x: Float;
-	public var y: Float;
-	public var rotation: Float;
-	public var scaleX: Float;
-	public var scaleY: Float;
-	public var shearX: Float;
-	public var shearY: Float;
-	public var ax: Float;
-	public var ay: Float;
-	public var arotation: Float;
-	public var ascaleX: Float;
-	public var ascaleY: Float;
-	public var ashearX: Float;
-	public var ashearY: Float;
-	public var appliedValid: Bool;
+	public var data(get, never):BoneData;
+	public var skeleton(get, never):Skeleton;
+	public var parent(get, never):Bone;
+	public var children(get, never):Array<Bone>;
+	public var x:Float;
+	public var y:Float;
+	public var rotation:Float;
+	public var scaleX:Float;
+	public var scaleY:Float;
+	public var shearX:Float;
+	public var shearY:Float;
+	public var ax:Float;
+	public var ay:Float;
+	public var arotation:Float;
+	public var ascaleX:Float;
+	public var ascaleY:Float;
+	public var ashearX:Float;
+	public var ashearY:Float;
+	public var appliedValid:Bool;
 	
-	public var a(get, never): Float;
-	public var b(get, never): Float;
-	public var c(get, never): Float;
-	public var d(get, never): Float;
-	public var worldX(get, never): Float;
-	public var worldY(get, never): Float;
-	public var worldRotationX(get, never): Float;
-	public var worldRotationY(get, never): Float;
-	public var worldScaleX(get, never): Float;
-	public var worldScaleY(get, never): Float;
+	public var a(get, never):Float;
+	public var b(get, never):Float;
+	public var c(get, never):Float;
+	public var d(get, never):Float;
+	public var worldX(get, never):Float;
+	public var worldY(get, never):Float;
+	public var worldRotationX(get, never):Float;
+	public var worldRotationY(get, never):Float;
+	public var worldScaleX(get, never):Float;
+	public var worldScaleY(get, never):Float;
 
-	@:allow(spine) private var _sorted: Bool;
+	@:allow(spine) private var _sorted:Bool;
 
 	/** @param parent May be null. */
-	public function new(data: BoneData, skeleton: Skeleton, parent: Bone)
+	public function new(data:BoneData, skeleton:Skeleton, parent:Bone)
 	{
+		super();
+		
 		if (data == null)
+		{
 			throw 'data cannot be null.';
-			
+		}
+		
 		if (skeleton == null)
+		{
 			throw 'skeleton cannot be null.';
+		}
 		
 		_data = data;
 		_skeleton = skeleton;
@@ -89,19 +95,19 @@ class Bone implements Updatable
 	}
 
 	/** Same as updateWorldTransform(). This method exists for Bone to implement Updatable. */
-	public function update(): Void
+	override public function update():Void
 	{
 		updateWorldTransformWith(x, y, rotation, scaleX, scaleY, shearX, shearY);
 	}
 
 	/** Computes the world SRT using the parent bone and this bone's local SRT. */
-	public function updateWorldTransform(): Void
+	public function updateWorldTransform():Void
 	{
 		updateWorldTransformWith(x, y, rotation, scaleX, scaleY, shearX, shearY);
 	}
 
 	/** Computes the world SRT using the parent bone and the specified local SRT. */
-	public function updateWorldTransformWith(x: Float, y: Float, rotation: Float, scaleX: Float, scaleY: Float, shearX: Float, shearY: Float): Void
+	public function updateWorldTransformWith(x:Float, y:Float, rotation:Float, scaleX:Float, scaleY:Float, shearX:Float, shearY:Float):Void
 	{
 		ax = x;
 		ay = y;
@@ -112,16 +118,16 @@ class Bone implements Updatable
 		ashearY = shearY;
 		appliedValid = true;
 		
-		var rotationY: Float = 0;
-		var la: Float = 0;
-		var lb: Float = 0;
-		var lc: Float = 0; 
-		var ld: Float = 0;
-		var sin: Float = 0;
-		var cos: Float = 0;
-		var s: Float = 0;
+		var rotationY:Float = 0;
+		var la:Float = 0;
+		var lb:Float = 0;
+		var lc:Float = 0; 
+		var ld:Float = 0;
+		var sin:Float = 0;
+		var cos:Float = 0;
+		var s:Float = 0;
 
-		var parent: Bone = _parent;
+		var parent:Bone = _parent;
 		if (parent == null) // Root bone.
 		{
 			rotationY = rotation + 90 + shearY;
@@ -130,7 +136,7 @@ class Bone implements Updatable
 			lc = MathUtils.sinDeg(rotation + shearX) * scaleX;
 			ld = MathUtils.sinDeg(rotationY) * scaleY;
 			
-			var skeleton: Skeleton = _skeleton;
+			var skeleton:Skeleton = _skeleton;
 			if (skeleton.flipX) 
 			{
 				x = -x;
@@ -155,10 +161,10 @@ class Bone implements Updatable
 			return;
 		}
 
-		var pa: Float = parent._a;
-		var pb: Float = parent._b;
-		var pc: Float = parent._c;
-		var pd: Float = parent._d;
+		var pa:Float = parent._a;
+		var pb:Float = parent._b;
+		var pc:Float = parent._c;
+		var pd:Float = parent._d;
 		_worldX = pa * x + pb * y + parent._worldX;
 		_worldY = pc * x + pd * y + parent._worldY;
 
@@ -185,7 +191,7 @@ class Bone implements Updatable
 				
 			case TransformIntMode.NO_ROTATION_OR_REFLECTION:
 				s = pa * pa + pc * pc;
-				var prx: Float = 0;
+				var prx:Float = 0;
 				if (s > 0.0001) 
 				{
 					s = Math.abs(pa * pd - pb * pc) / s;
@@ -199,8 +205,8 @@ class Bone implements Updatable
 					pc = 0;
 					prx = 90 - Math.atan2(pd, pb) * MathUtils.radDeg;
 				}
-				var rx: Float = rotation + shearX - prx;
-				var ry: Float = rotation + shearY - prx + 90;
+				var rx:Float = rotation + shearX - prx;
+				var ry:Float = rotation + shearY - prx + 90;
 				la = MathUtils.cosDeg(rx) * scaleX;
 				lb = MathUtils.cosDeg(ry) * scaleY;
 				lc = MathUtils.sinDeg(rx) * scaleX;
@@ -213,13 +219,15 @@ class Bone implements Updatable
 			case TransformIntMode.NO_SCALE, TransformIntMode.NO_SCALE_OR_REFLECTION:
 				cos = MathUtils.cosDeg(rotation);
 				sin = MathUtils.sinDeg(rotation);
-				var za: Float = pa * cos + pb * sin;
-				var zc: Float = pc * cos + pd * sin;
+				var za:Float = pa * cos + pb * sin;
+				var zc:Float = pc * cos + pd * sin;
 				s = Math.sqrt(za * za + zc * zc);
 				
 				if (s > 0.00001) 
+				{
 					s = 1 / s;
-					
+				}
+				
 				za *= s;
 				zc *= s;
 				s = Math.sqrt(za * za + zc * zc);
@@ -241,7 +249,7 @@ class Bone implements Updatable
 				}
 				return;
 		}
-			
+		
 		if (_skeleton.flipX) 
 		{
 			_a = -_a;
@@ -254,7 +262,7 @@ class Bone implements Updatable
 		}
 	}
 
-	public function setToSetupPose(): Void
+	public function setToSetupPose():Void
 	{
 		x = _data.x;
 		y = _data.y;
@@ -265,44 +273,48 @@ class Bone implements Updatable
 		shearY = _data.shearY;
 	}
 
-	public function worldToLocalRotationX(): Float
+	public function worldToLocalRotationX():Float
 	{
-		var parent: Bone = _parent;
+		var parent:Bone = _parent;
 		if (parent == null)
+		{
 			return arotation;
+		}
 		
-		var pa: Float = parent.a;
-		var pb: Float = parent.b;
-		var pc: Float = parent.c;
-		var pd: Float = parent.d;
-		var a: Float = this.a;
-		var c: Float = this.c;
+		var pa:Float = parent.a;
+		var pb:Float = parent.b;
+		var pc:Float = parent.c;
+		var pd:Float = parent.d;
+		var a:Float = this.a;
+		var c:Float = this.c;
 		return Math.atan2(pa * c - pc * a, pd * a - pb * c) * MathUtils.radDeg;
 	}
 
-	public function worldToLocalRotationY(): Float
+	public function worldToLocalRotationY():Float
 	{
-		var parent: Bone = _parent;
+		var parent:Bone = _parent;
 		if (parent == null)
+		{
 			return arotation;
+		}
 		
-		var pa: Float = parent.a;
-		var pb: Float = parent.b;
-		var pc: Float = parent.c;
-		var pd: Float = parent.d;
-		var b: Float = this.b;
-		var d: Float = this.d;
+		var pa:Float = parent.a;
+		var pb:Float = parent.b;
+		var pc:Float = parent.c;
+		var pd:Float = parent.d;
+		var b:Float = this.b;
+		var d:Float = this.d;
 		return Math.atan2(pa * d - pc * b, pd * b - pb * d) * MathUtils.radDeg;
 	}
 
-	public function rotateWorld(degrees : Float): Void
+	public function rotateWorld(degrees:Float):Void
 	{
-		var a: Float = this.a;
-		var b: Float = this.b;
-		var c: Float = this.c;
-		var d: Float = this.d;
-		var cos: Float = MathUtils.cosDeg(degrees);
-		var sin: Float = MathUtils.sinDeg(degrees);
+		var a:Float = this.a;
+		var b:Float = this.b;
+		var c:Float = this.c;
+		var d:Float = this.d;
+		var cos:Float = MathUtils.cosDeg(degrees);
+		var sin:Float = MathUtils.sinDeg(degrees);
 		this._a = cos * a - sin * c;
 		this._b = cos * b - sin * d;
 		this._c = sin * a + cos * c;
@@ -314,11 +326,11 @@ class Bone implements Updatable
 	 * the applied transform after the world transform has been modified directly (eg, by a constraint).
 	 * <p>
 	 * Some information is ambiguous in the world transform, such as -1,-1 scale versus 180 rotation. */
-	public function updateAppliedTransform(): Void
+	public function updateAppliedTransform():Void
 	{
 		appliedValid = true;
 		
-		var parent: Bone = this.parent;
+		var parent:Bone = this.parent;
 		if (parent == null) 
 		{
 			ax = worldX;
@@ -331,23 +343,23 @@ class Bone implements Updatable
 			return;
 		}
 		
-		var pa: Float = parent.a;
-		var pb: Float = parent.b;
-		var pc: Float = parent.c;
-		var pd: Float = parent.d;
-		var pid: Float = 1 / (pa * pd - pb * pc);
-		var dx: Float = worldX - parent.worldX;
-		var dy: Float = worldY - parent.worldY;
+		var pa:Float = parent.a;
+		var pb:Float = parent.b;
+		var pc:Float = parent.c;
+		var pd:Float = parent.d;
+		var pid:Float = 1 / (pa * pd - pb * pc);
+		var dx:Float = worldX - parent.worldX;
+		var dy:Float = worldY - parent.worldY;
 		ax = (dx * pd * pid - dy * pb * pid);
 		ay = (dy * pa * pid - dx * pc * pid);
-		var ia: Float = pid * pd;
-		var id: Float = pid * pa;
-		var ib: Float = pid * pb;
-		var ic: Float = pid * pc;
-		var ra: Float = ia * a - ib * c;
-		var rb: Float = ia * b - ib * d;
-		var rc: Float = id * c - ic * a;
-		var rd: Float = id * d - ic * b;
+		var ia:Float = pid * pd;
+		var id:Float = pid * pa;
+		var ib:Float = pid * pb;
+		var ic:Float = pid * pc;
+		var ra:Float = ia * a - ib * c;
+		var rb:Float = ia * b - ib * d;
+		var rc:Float = id * c - ic * a;
+		var rd:Float = id * d - ic * b;
 		ashearX = 0;
 		ascaleX = Math.sqrt(ra * ra + rc * rc);
 		if (scaleX > 0.0001) 
@@ -366,20 +378,20 @@ class Bone implements Updatable
 		}
 	}
 
-	public function worldToLocal(world: Array<Float>): Void
+	public function worldToLocal(world:Array<Float>):Void
 	{
-		var a: Float = _a;
-		var b: Float = _b;
-		var c: Float = _c;
-		var d: Float = _d;
-		var invDet: Float = 1 / (a * d - b * c);
-		var x: Float = world[0] - _worldX;
-		var y: Float = world[1] - _worldY;
+		var a:Float = _a;
+		var b:Float = _b;
+		var c:Float = _c;
+		var d:Float = _d;
+		var invDet:Float = 1 / (a * d - b * c);
+		var x:Float = world[0] - _worldX;
+		var y:Float = world[1] - _worldY;
 		world[0] = (x * d * invDet - y * b * invDet);
 		world[1] = (y * a * invDet - x * c * invDet);
 	}
 
-	public function localToWorld(local: Array<Float>): Void
+	public function localToWorld(local:Array<Float>):Void
 	{
 		var localX: Float = local[0];
 		var localY: Float = local[1];
@@ -387,45 +399,92 @@ class Bone implements Updatable
 		local[1] = localX * _c + localY * _d + _worldY;
 	}
 
-	public function toString(): String
+	public function toString():String
 	{
 		return _data._name;
 	}
 	
 	// getters / setters
 	
-	private inline function get_data(): BoneData return _data;
-	private inline function get_skeleton() : Skeleton return _skeleton;
-	private inline function get_parent(): Bone return _parent;
-	private inline function get_children(): Array<Bone> return _children;
-	private inline function get_a(): Float return _a;
-	private inline function get_b(): Float return _b;
-	private inline function get_c(): Float return _c;
-	private inline function get_d(): Float return _d;
-	private inline function get_worldX(): Float return _worldX;
-	private inline function get_worldY(): Float return _worldY;
-	private inline function get_worldRotationX(): Float return Math.atan2(_c, _a) * MathUtils.radDeg;
-	private inline function get_worldRotationY(): Float return Math.atan2(_d, _b) * MathUtils.radDeg;
+	private inline function get_data():BoneData 
+	{
+		return _data;
+	}
 	
-	private inline function get_worldScaleX(): Float 
+	private inline function get_skeleton():Skeleton 
+	{
+		return _skeleton;
+	}
+	
+	private inline function get_parent():Bone 
+	{
+		return _parent;
+	}
+	
+	private inline function get_children():Array<Bone> 
+	{
+		return _children;
+	}
+	
+	private inline function get_a():Float 
+	{
+		return _a;
+	}
+	
+	private inline function get_b():Float 
+	{
+		return _b;
+	}
+	
+	private inline function get_c():Float 
+	{
+		return _c;
+	}
+	
+	private inline function get_d():Float 
+	{
+		return _d;
+	}
+	
+	private inline function get_worldX():Float 
+	{
+		return _worldX;
+	}
+	
+	private inline function get_worldY():Float 
+	{
+		return _worldY;
+	}
+	
+	private inline function get_worldRotationX():Float 
+	{
+		return Math.atan2(_c, _a) * MathUtils.radDeg;
+	}
+	
+	private inline function get_worldRotationY():Float 
+	{
+		return Math.atan2(_d, _b) * MathUtils.radDeg;
+	}
+	
+	private inline function get_worldScaleX():Float 
 	{
 		return Math.sqrt(_a * _a + _c * _c);
 	}
 	
-	private inline function get_worldScaleY(): Float 
+	private inline function get_worldScaleY():Float 
 	{
 		return Math.sqrt(_b * _b + _d * _d);
 	}
 	
-	@:allow(spine) private var _data: BoneData;
-	@:allow(spine) private var _skeleton: Skeleton;
-	@:allow(spine) private var _parent: Bone;
-	@:allow(spine) private var _children: Array<Bone> = new Array<Bone>();
+	@:allow(spine) private var _data:BoneData;
+	@:allow(spine) private var _skeleton:Skeleton;
+	@:allow(spine) private var _parent:Bone;
+	@:allow(spine) private var _children:Array<Bone> = new Array<Bone>();
 	
-	@:allow(spine) private var _a : Float;
-	@:allow(spine) private var _b : Float;
-	@:allow(spine) private var _c : Float;
-	@:allow(spine) private var _d : Float;
-	@:allow(spine) private var _worldX : Float;
-	@:allow(spine) private var _worldY : Float;
+	@:allow(spine) private var _a:Float;
+	@:allow(spine) private var _b:Float;
+	@:allow(spine) private var _c:Float;
+	@:allow(spine) private var _d:Float;
+	@:allow(spine) private var _worldX:Float;
+	@:allow(spine) private var _worldY:Float;
 }

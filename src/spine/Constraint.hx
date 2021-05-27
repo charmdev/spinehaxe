@@ -31,7 +31,15 @@
 
 package spine;
 
-interface Constraint extends Updatable
+class Constraint extends Updatable
 {
-    function getOrder() : Float;
+	public function new()
+	{
+		super();
+	}
+	
+    public function getOrder():Float
+	{
+		return 0.0;
+	}
 }

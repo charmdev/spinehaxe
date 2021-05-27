@@ -36,41 +36,43 @@ import spine.Event;
 import spine.Skeleton;
 import spine.animation.Timeline;
 
-class EventTimeline implements Timeline
+class EventTimeline extends Timeline
 {
-	public var type:TimelineType;
-	
-	public var frameCount(get, never): Int;
+	public var frameCount(get, never):Int;
 
-	public var frames: Vector<Float>;  // time, ...  
-	public var events: Vector<Event>;
+	public var frames:Vector<Float>;  // time, ...  
+	public var events:Vector<Event>;
 
-	public function new(frameCount: Int)
+	public function new(frameCount:Int)
 	{
+		super();
+		
 		frames = ArrayUtils.allocFloat( frameCount );
 		events = new Vector<Event>( frameCount );
 		
 		type = TimelineType.EVENT;
 	}
 
-	public inline function getPropertyId(): Int 
+	override public inline function getPropertyId():Int 
 	{
-		var value: Int = TimelineType.EVENT;
+		var value:Int = TimelineType.EVENT;
 		return (value << 24);
 	}
 	
 	/** Sets the time and value of the specified keyframe. */
-	public inline function setFrame(frameIndex: Int, event: Event): Void
+	public inline function setFrame(frameIndex:Int, event:Event):Void
 	{
 		frames[frameIndex] = event.time;
 		events[frameIndex] = event;
 	}
 
 	/** Fires events for frames > lastTime and <= time. */
-	public function apply(skeleton: Skeleton, lastTime: Float, time: Float, firedEvents: Array<Event>, alpha: Float, setupPose: Bool, mixingOut: Bool): Void
+	override public function apply(skeleton:Skeleton, lastTime:Float, time:Float, firedEvents:Array<Event>, alpha:Float, setupPose:Bool, mixingOut:Bool):Void
 	{
 		if (firedEvents == null)
+		{
 			return;
+		}
 
 		if (lastTime > time) // Fire events after last time for looped animations.
 		{    
@@ -78,22 +80,30 @@ class EventTimeline implements Timeline
 			lastTime = -1;
 		}
 		else if (lastTime >= frames[frameCount - 1]) // Last time is after last frame.  
+		{
 			return;
+		}
 		
 		if (time < frames[0]) // Time is before first frame.
+		{
 			return;  
+		}
 
-		var frame: Int;
+		var frame:Int;
 		if (lastTime < frames[0]) 
-			frame = 0
+		{
+			frame = 0;
+		}
 		else 
 		{
 			frame = Animation.binarySearch1(frames, lastTime);
-			var frameTime: Float = frames[frame];
+			var frameTime:Float = frames[frame];
 			while (frame > 0) // Fire multiple events with the same frame. 
 			{   
 				if (frames[frame - 1] != frameTime)
+				{
 					break;
+				}
 				
 				frame--;
 			}
@@ -107,5 +117,8 @@ class EventTimeline implements Timeline
 	}
 	
 	// getters / setters
-	private inline function get_frameCount(): Int return frames.length;
+	private inline function get_frameCount():Int 
+	{
+		return frames.length;
+	}
 }

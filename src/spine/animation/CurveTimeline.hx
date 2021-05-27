@@ -39,46 +39,46 @@ import spine.Event;
 import spine.Skeleton;
 
 /** Base class for frames that use an interpolation bezier curve. */
-class CurveTimeline implements Timeline
+class CurveTimeline extends Timeline
 {
-	public var type:TimelineType;
-	
-	public var frameCount(get, never): Int;
+	public var frameCount(get, never):Int;
 
-	private static inline var LINEAR: Float = 0;
-	private static inline var STEPPED: Float = 1;
-	private static inline var BEZIER: Float = 2;
-	private static var BEZIER_SIZE: Int = 10 * 2 - 1;
+	private static inline var LINEAR:Float = 0;
+	private static inline var STEPPED:Float = 1;
+	private static inline var BEZIER:Float = 2;
+	private static var BEZIER_SIZE:Int = 10 * 2 - 1;
 
-	private var curves: Vector<Float>;  // type, x, y, ...  
+	private var curves:Vector<Float>;  // type, x, y, ...  
 
-	public function new(frameCount: Int)
+	public function new(frameCount:Int)
 	{
+		super();
+		
 		curves = ArrayUtils.allocFloat((frameCount - 1) * BEZIER_SIZE);
 		type = TimelineType.CURVE;
 	}
 	
-	public function getPropertyId (): Int 
+	override public function getPropertyId():Int 
 	{
 		return 0;
 	}
 	
-	public function apply(skeleton: Skeleton, lastTime: Float, time: Float, firedEvents: Array<Event>, alpha: Float, setupPose: Bool, mixingOut: Bool): Void
+	override public function apply(skeleton:Skeleton, lastTime:Float, time:Float, firedEvents:Array<Event>, alpha:Float, setupPose:Bool, mixingOut:Bool):Void
 	{
 
 	}
 
-	private inline function get_frameCount(): Int
+	private inline function get_frameCount():Int
 	{
 		return Math.floor(curves.length / BEZIER_SIZE + 1);
 	}
 
-	public inline function setLinear(frameIndex: Int): Void
+	public inline function setLinear(frameIndex:Int):Void
 	{
 		curves[frameIndex * BEZIER_SIZE] = LINEAR;
 	}
 
-	public inline function setStepped(frameIndex: Int): Void
+	public inline function setStepped(frameIndex:Int):Void
 	{
 		curves[frameIndex * BEZIER_SIZE] = STEPPED;
 	}
@@ -86,24 +86,24 @@ class CurveTimeline implements Timeline
 	/** Sets the control handle positions for an interpolation bezier curve used to transition from this keyframe to the next.
 	* cx1 and cx2 are from 0 to 1, representing the percent of time between the two keyframes. cy1 and cy2 are the percent of
 	* the difference between the keyframe's values. */
-	public function setCurve(frameIndex: Int, cx1: Float, cy1: Float, cx2: Float, cy2: Float): Void
+	public function setCurve(frameIndex:Int, cx1:Float, cy1:Float, cx2:Float, cy2:Float):Void
 	{
-		var tmpx: Float = (-cx1 * 2 + cx2) * 0.03;
-		var tmpy: Float = (-cy1 * 2 + cy2) * 0.03;
-		var dddfx: Float = ((cx1 - cx2) * 3 + 1) * 0.006;
-		var dddfy: Float = ((cy1 - cy2) * 3 + 1) * 0.006;
-		var ddfx: Float = tmpx * 2 + dddfx;
-		var ddfy: Float = tmpy * 2 + dddfy;
-		var dfx: Float = cx1 * 0.3 + tmpx + dddfx * 0.16666667;
-		var dfy: Float = cy1 * 0.3 + tmpy + dddfy * 0.16666667;
+		var tmpx:Float = (-cx1 * 2 + cx2) * 0.03;
+		var tmpy:Float = (-cy1 * 2 + cy2) * 0.03;
+		var dddfx:Float = ((cx1 - cx2) * 3 + 1) * 0.006;
+		var dddfy:Float = ((cy1 - cy2) * 3 + 1) * 0.006;
+		var ddfx:Float = tmpx * 2 + dddfx;
+		var ddfy:Float = tmpy * 2 + dddfy;
+		var dfx:Float = cx1 * 0.3 + tmpx + dddfx * 0.16666667;
+		var dfy:Float = cy1 * 0.3 + tmpy + dddfy * 0.16666667;
 
-		var i: Int = frameIndex * BEZIER_SIZE;
+		var i:Int = frameIndex * BEZIER_SIZE;
 		//var curves: Array<Float> = this.curves;
 		curves[i++] = BEZIER;
 
-		var x : Float = dfx;
-		var y : Float = dfy;
-		var n : Int = i + BEZIER_SIZE - 1;
+		var x:Float = dfx;
+		var y:Float = dfy;
+		var n:Int = i + BEZIER_SIZE - 1;
 		while (i < n)
 		{
 			curves[i] = x;
@@ -118,29 +118,33 @@ class CurveTimeline implements Timeline
 		}
 	}
 
-	public function getCurvePercent(frameIndex: Int, percent: Float): Float
+	public function getCurvePercent(frameIndex:Int, percent:Float):Float
 	{
 		percent = MathUtils.clamp(percent, 0, 1);
 		//var curves: Array<Float> = this.curves;
-		var i: Int = frameIndex * BEZIER_SIZE;
-		var type: Float = curves[i];
+		var i:Int = frameIndex * BEZIER_SIZE;
+		var type:Float = curves[i];
 		if (type == LINEAR)
+		{
 			return percent;
+		}
 
 		if (type == STEPPED)
+		{
 			return 0;
+		}
 		
 		i++;
-		var x: Float = 0;
-		var start: Int = i;
-		var n: Int = i + BEZIER_SIZE - 1;
+		var x:Float = 0;
+		var start:Int = i;
+		var n:Int = i + BEZIER_SIZE - 1;
 		while (i < n)
 		{
 			x = curves[i];
 			if (x >= percent) 
 			{
-				var prevX: Float;
-				var prevY: Float;
+				var prevX:Float;
+				var prevY:Float;
 				if (i == start) 
 				{
 					prevX = 0;
@@ -151,11 +155,13 @@ class CurveTimeline implements Timeline
 					prevX = curves[i - 2];
 					prevY = curves[i - 1];
 				}
+				
 				return prevY + (curves[i + 1] - prevY) * (percent - prevX) / (x - prevX);
 			}
 			i += 2;
 		}
-		var y: Float = curves[i - 1];
+		
+		var y:Float = curves[i - 1];
 		return y + (1 - y) * (percent - x) / (1 - x);
 	}
 }

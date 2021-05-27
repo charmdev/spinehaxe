@@ -31,7 +31,15 @@
 
 package spine;
 
-interface Updatable
+class Updatable
 {
-    function update() : Void;
+	public function new()
+	{
+		
+	}
+	
+    public function update():Void
+	{
+		
+	}
 }
